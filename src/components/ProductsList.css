@@ -15,13 +15,14 @@
 .products li {
   display: flex;
   flex-direction: column;
-  background: #ececec;
+  background: #f7f7f7;
   color: #1a1a1a;
   padding: 1rem;
   gap: 1rem;
   box-shadow: 4px 10px 10px -2px rgba(0, 0, 0, .1);
   border-radius: 20px;
-  max-width: 250px;
+  max-width: 232px;
+  border: 1px solid #e2e2e2;
 }
 
 .products h3 {
@@ -39,5 +40,5 @@
   height: 200px;
   display: block;
   object-fit: cover;
-  background: #b4b4b4;
+  background: #f7f7f7;
 }

@@ -1,16 +1,18 @@
-// import Image from "next/image";
-import { ProductsList, Product } from "@/components/ProductsList";
+import { ProductsList } from "@/components/ProductsList";
+import { Product } from "@/interfaces";
 import articlesMock from "../mocks/articles.json";
-// import styles from "./page.module.css";
+import { Header, SearchBar, Title } from "@/components";
+import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <div>
-      <main>
+    <div className={styles.page}>
+      <main className={styles.main}>
+        <Header />
+        <Title />
+        <SearchBar />
         <ProductsList products={articlesMock as Product[]} />
       </main>
-      <footer>
-      </footer>
     </div>
   );
 }
