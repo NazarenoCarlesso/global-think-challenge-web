@@ -1,0 +1,43 @@
+.products {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.products ul {
+  width: 80%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(232px, 1fr));
+  gap: 1rem;
+}
+
+.products li {
+  display: flex;
+  flex-direction: column;
+  background: #ececec;
+  color: #1a1a1a;
+  padding: 1rem;
+  gap: 1rem;
+  box-shadow: 4px 10px 10px -2px rgba(0, 0, 0, .1);
+  border-radius: 20px;
+  max-width: 250px;
+}
+
+.products h3 {
+  margin: 4px 0px;
+}
+
+.products span {
+  font-size: 1rem;
+  opacity: .9;
+}
+
+.products img {
+  border-radius: 20px;
+  width: 200px;
+  height: 200px;
+  display: block;
+  object-fit: cover;
+  background: #b4b4b4;
+}
