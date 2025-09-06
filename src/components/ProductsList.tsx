@@ -1,30 +1,60 @@
+"use client"
 import Image from "next/image"
-import { Product } from "@/interfaces"
 import "./ProductsList.css"
+import { useContext, useEffect } from "react"
+import { ProductsContext } from "@/context/products"
+import { getAllProducts } from "@/services/products"
 
-interface ProductsListProps {
-  products: Product[]
-}
+export const ProductsList = () => {
+  const { filteredResults: products, loading, favorites, setProducts, setFavorite } = useContext(ProductsContext);
 
-export const ProductsList = ({ products }: ProductsListProps) => {
+  useEffect(() => {
+    getAllProducts().then(allProducts => setProducts(allProducts))
+  }, [])
+
+  const handleFavButton = (id: number) => setFavorite(id)
+
   return (
     <div className='products'>
       <ul>
         {
-          products.map(product => (
-            <li key={product.id}>
-              <Image
-                src={product.imagen}
-                alt={product.titulo}
-                width={200}
-                height={200}
-              />
-              <div>
-                <h3>{product.titulo}</h3>
-                <h3>{product.precio}</h3>
-              </div>
-            </li>
-          ))
+          loading
+            ? <>
+              <li className='animated-bg' />
+              <li className='animated-bg' />
+              <li className='animated-bg' />
+              <li className='animated-bg' />
+            </>
+            : products.map(product => (
+              <li key={product.id}>
+                <Image
+                  src={product.imagen}
+                  alt={product.titulo}
+                  width={200}
+                  height={200}
+                />
+                <div className='product-card'>
+                  <div className='product-title'>
+                    <div>
+                      <h4>{product.titulo}</h4>
+                      <p>{product.categoria}</p>
+                    </div>
+                    <h3>⭐{product.rating}</h3>
+                  </div>
+                  <p className='description'>
+                    {product.descripcion}
+                  </p>
+                  <h3 className='price'>
+                    ${product.precio}
+                  </h3>
+                  <button
+                    onClick={() => handleFavButton(product.id)}
+                    className={`favorite ${favorites.includes(product.id) ? 'fav' : undefined}`}>
+                    {favorites.includes(product.id) ? '🤍' : '🧡'}
+                  </button>
+                </div>
+              </li>
+            ))
         }
       </ul>
     </div>

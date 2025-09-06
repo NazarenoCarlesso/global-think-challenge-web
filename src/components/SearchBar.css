@@ -11,8 +11,14 @@
   margin-right: 4px;
 }
 
+.searchbar div p {
+  font-size: 15px;
+}
+
 .searchbar h4 {
   margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 17px;
 }
 
 .searchbar div button {
@@ -22,5 +28,5 @@
   width: 32px;
   height: 32px;
   font-size: medium;
-  margin-right: 4px;
+  margin-right: 8px;
 }
