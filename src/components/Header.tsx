@@ -3,12 +3,17 @@ import "./Header.css";
 import { ProductsContext } from "@/context/products";
 
 export const Header = () => {
-  const { toggleCart } = useContext(ProductsContext);
+  const { toggleCart, cart } = useContext(ProductsContext);
+
+  const counter = cart.length
 
   return (
     <header>
       <button onClick={() => toggleCart()}>
         🛒
+        {
+          counter ? <p>{counter}</p> : null
+        }
       </button>
     </header>
   )

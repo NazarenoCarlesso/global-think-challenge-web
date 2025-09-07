@@ -54,3 +54,8 @@ input {
   background-color: #f7f7f7;
   font-family: var(--font-geist-sans);
 }
+
+button:hover {
+  border: 1px solid #d8d8d8;
+  background-color: #eeeeee;
+}

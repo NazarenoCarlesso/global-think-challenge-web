@@ -28,7 +28,7 @@ export const Cart = () => {
 
 
 export const CartItem = (item: CartItemProps) => {
-  const { addToCart, decreaseFromCart } = useContext(ProductsContext);
+  const { addToCart, decreaseFromCart, removeFromCart } = useContext(ProductsContext);
   const { quantity, ...product } = item;
 
   return (
@@ -41,6 +41,9 @@ export const CartItem = (item: CartItemProps) => {
         <p>{quantity}</p>
         <button onClick={() => addToCart(product)}>+</button>
       </footer>
+      <button className='remove' onClick={() => removeFromCart(product.id)}>
+        🗑️
+      </button>
     </li>
   )
 }

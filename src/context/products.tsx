@@ -14,7 +14,29 @@ interface ProductContextType extends ProductsState {
   clearCart: () => void
   toggleCart: () => void
   isCartOpen: boolean
+  removeFromCart: (id: number) => void
 }
+
+const defaultContextValue: ProductContextType = {
+  // Valores iniciales de ProductsState
+  products: [],
+  loading: false,
+  favorites: [],
+  cart: [],
+
+  // Funciones y otros valores con implementaciones "vacías" o iniciales
+  setProducts: () => { },
+  setFavorite: () => { },
+  setFilter: () => { }, // Dispatch no hace nada por defecto
+  filteredResults: [],
+  resultsCount: 0,
+  addToCart: () => { },
+  decreaseFromCart: () => { },
+  clearCart: () => { },
+  toggleCart: () => { },
+  isCartOpen: false,
+  removeFromCart: () => { }
+};
 
 interface ProductsState {
   products: Product[]
@@ -105,7 +127,7 @@ const productsReducer = (state: ProductsState, { type, payload }: ProductsAction
   }
 }
 
-export const ProductsContext = createContext<ProductContextType>();
+export const ProductsContext = createContext<ProductContextType>(defaultContextValue);
 
 export const ProductsProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(productsReducer, PRODUCTS_INITIAL_STATE);
@@ -133,6 +155,8 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
 
   const clearCart = () => dispatch({ type: 'CLEAR_CART', payload: undefined })
 
+  const removeFromCart = (id: number) => dispatch({ type: 'REMOVE_FROM_CART', payload: id })
+
   const toggleCart = () => setCartOpen((state) => !state)
 
   return (
@@ -148,7 +172,8 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
         decreaseFromCart,
         clearCart,
         isCartOpen,
-        toggleCart
+        toggleCart,
+        removeFromCart
       }}>
       {children}
     </ProductsContext.Provider>

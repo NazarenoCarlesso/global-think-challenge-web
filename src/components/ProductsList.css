@@ -20,7 +20,7 @@
   color: #1a1a1a;
   padding: 1rem;
   gap: 1rem;
-  box-shadow: 4px 10px 10px -2px rgba(0, 0, 0, .1);
+  box-shadow: 4px 10px 10px -2px rgba(0, 0, 0, .05);
   border-radius: 20px;
   max-width: 232px;
   border: 1px solid #e2e2e2;
@@ -55,6 +55,11 @@
 .product-title div h4 {
   font-size: 15px;
   font-weight: 600;
+  cursor: pointer;
+}
+
+.product-title div h4:hover {
+  color: #001c3b;
 }
 
 .product-title div p {
@@ -90,6 +95,10 @@
 
 .fav {
   background-color: #ff5f0b;
+}
+
+.fav:hover {
+  background-color: #ff7e38;
 }
 
 @keyframes simple-shimmer {

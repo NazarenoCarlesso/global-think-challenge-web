@@ -1,8 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Global Think Challenge Web
 
-## Getting Started
+Tienda de productos informáticos para la entrevista técnica.
 
-First, run the development server:
+## Requisitos previos
+
+Antes de comenzar, asegurate de tener instalado en tu máquina:
+
+- [Node.js](https://nodejs.org/) (versión recomendada LTS)
+- Un gestor de paquetes: `npm`, `yarn`, `pnpm` o `bun`
+
+## Instalación
+
+Cloná este repositorio en tu equipo y accedé al directorio del proyecto:
+
+```bash
+git clone <URL_DEL_REPOSITORIO>
+cd global-think-challenge-web
+```
+
+Luego instalá las dependencias:
+
+```bash
+npm install
+# o
+yarn install
+# o
+pnpm install
+# o
+bun install
+```
+
+## Levantar el proyecto
+
+Para iniciar el servidor de desarrollo, ejecutá:
 
 ```bash
 npm run dev
@@ -14,23 +44,8 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Una vez que el servidor esté corriendo, abrí tu navegador en [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Deploy en Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+![Vercel Deploy](https://deploy-badge.vercel.app/vercel/reactions-demo)
