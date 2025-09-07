@@ -1,41 +1,48 @@
 "use client"
-import { Product } from "@/interfaces";
+import { CartItem, Product } from "@/interfaces";
 import { createContext, Dispatch, ReactNode, SetStateAction, useReducer, useState } from "react";
 
-interface ProductContextType {
-  products: Product[]
-  loading: boolean
-  favorites: number[]
+interface ProductContextType extends ProductsState {
   setProducts: (products: Product[]) => void
   setFavorite: (id: number) => void
   setFilter: Dispatch<SetStateAction<string | undefined>>
   filteredResults: Product[]
   resultsCount: number
+  addToCart: (product: Product) => void
+  decreaseFromCart: (id: number) => void
+  clearCart: () => void
 }
 
 interface ProductsState {
   products: Product[]
   loading: boolean
   favorites: number[]
+  cart: CartItem[]
 };
 
 const PRODUCTS_INITIAL_STATE = {
   products: [],
   loading: true,
-  favorites: []
+  favorites: [],
+  cart: []
 };
 
 type ProductsAction =
   | { type: 'SET_PRODUCTS'; payload: Product[] }
-  | { type: 'SET_FAVORITE'; payload: number };
+  | { type: 'SET_FAVORITE'; payload: number }
+  | { type: 'ADD_TO_CART'; payload: Product }
+  | { type: 'DECREASE_FROM_CART'; payload: number }
+  | { type: 'REMOVE_FROM_CART'; payload: number }
+  | { type: 'CLEAR_CART'; payload: undefined };
 
 const productsReducer = (state: ProductsState, { type, payload }: ProductsAction) => {
   switch (type) {
     case 'SET_PRODUCTS':
       return {
+        ...PRODUCTS_INITIAL_STATE,
         products: payload,
-        loading: false,
-        favorites: payload.filter(p => p.fav).map(p => p.id)
+        favorites: payload.filter(p => p.fav).map(p => p.id),
+        loading: false
       }
     case 'SET_FAVORITE':
       const index = state.favorites.indexOf(payload)
@@ -45,6 +52,51 @@ const productsReducer = (state: ProductsState, { type, payload }: ProductsAction
           ? [...state.favorites, payload]
           : state.favorites.filter(fav => fav !== payload)
       }
+    case 'ADD_TO_CART':
+      const productInCart = state.cart.findIndex(item => item.id === payload.id)
+      return {
+        ...state,
+        cart: productInCart === -1
+          ? [...state.cart, { ...payload, quantity: 1 }]
+          : state.cart.map((item, index) =>
+            index === productInCart
+              ? {
+                ...item,
+                quantity: item.quantity + 1
+              } : item
+          )
+      }
+    case 'DECREASE_FROM_CART': {
+      const index = state.cart.findIndex(item => item.id === payload)
+
+      if (index === -1) return state; // si no está en el carrito, no hacemos nada
+
+      const item = state.cart[index];
+
+      return {
+        ...state,
+        cart:
+          item.quantity === 1
+            ? state.cart.filter((_, i) => i !== index)
+            : state.cart.map((item, i) =>
+              i === index
+                ? { ...item, quantity: item.quantity - 1 }
+                : item
+            )
+      }
+    }
+    case 'REMOVE_FROM_CART': {
+      return {
+        ...state,
+        cart: state.cart.filter(item => item.id !== payload)
+      }
+    }
+    case 'CLEAR_CART': {
+      return {
+        ...state,
+        cart: []
+      }
+    }
     default:
       return state;
   }
@@ -66,6 +118,13 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
 
   const setFavorite = (id: number) => dispatch({ type: 'SET_FAVORITE', payload: id })
 
+  const addToCart = (product: Product) =>
+    dispatch({ type: 'ADD_TO_CART', payload: product })
+
+  const decreaseFromCart = (id: number) => dispatch({ type: 'DECREASE_FROM_CART', payload: id })
+
+  const clearCart = () => dispatch({ type: 'CLEAR_CART', payload: undefined })
+
   return (
     <ProductsContext.Provider
       value={{
@@ -74,7 +133,10 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
         setFavorite,
         setFilter,
         filteredResults,
-        resultsCount
+        resultsCount,
+        addToCart,
+        decreaseFromCart,
+        clearCart
       }}>
       {children}
     </ProductsContext.Provider>

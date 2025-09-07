@@ -44,6 +44,7 @@ button {
   border-radius: 6px;
   border: 1px solid #e2e2e2;
   background-color: #f7f7f7;
+  font-family: var(--font-geist-sans);
 }
 
 input {
