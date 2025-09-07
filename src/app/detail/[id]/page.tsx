@@ -1,7 +1,6 @@
 "use client"
-import { ProductDetail } from "@/components";
+import { Cart, ProductDetail, Header } from "@/components";
 import styles from "../../page.module.css";
-import { Header } from "@/components";
 import React from "react";
 
 export default function Detail({ params }: { params: Promise<{ id: string }> }) {
@@ -12,6 +11,7 @@ export default function Detail({ params }: { params: Promise<{ id: string }> }) 
       <main className={styles.main}>
         <Header />
         <ProductDetail id={id} />
+        <Cart />
       </main>
     </div>
   )

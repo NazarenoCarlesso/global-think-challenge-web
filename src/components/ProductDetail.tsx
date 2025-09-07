@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 interface ProductDetailProps { id: string }
 
 export const ProductDetail = ({ id }: ProductDetailProps) => {
-  const { products } = useContext(ProductsContext)
+  const { products, addToCart } = useContext(ProductsContext)
 
   const router = useRouter()
 
@@ -35,7 +35,7 @@ export const ProductDetail = ({ id }: ProductDetailProps) => {
         <p>Tenés 30 días desde que lo recibís</p>
         <p>Conocer más</p>
         <footer>
-          <button className='purchase'>
+          <button className='purchase' onClick={() => addToCart(product)}>
             Comprar
           </button>
           <button className='return' onClick={() => router.push('/')}>

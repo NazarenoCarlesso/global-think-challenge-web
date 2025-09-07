@@ -1,20 +1,13 @@
 "use client"
 import Image from "next/image"
 import "./ProductsList.css"
-import { useContext, useEffect } from "react"
+import { useContext } from "react"
 import { ProductsContext } from "@/context/products"
-import { getAllProducts } from "@/services/products"
 import { useRouter } from "next/navigation"
 
 export const ProductsList = () => {
-  const { filteredResults: products, loading, favorites, setProducts, setFavorite } = useContext(ProductsContext);
-
+  const { filteredResults: products, loading, favorites, setFavorite } = useContext(ProductsContext);
   const router = useRouter();
-
-  useEffect(() => {
-    getAllProducts().then(allProducts => setProducts(allProducts))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   const handleFavButton = (id: number) => setFavorite(id)
 

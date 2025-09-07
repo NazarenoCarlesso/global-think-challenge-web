@@ -6,10 +6,10 @@ import "./Cart.css";
 import { CartItem as CartItemProps } from "@/interfaces";
 
 export const Cart = () => {
-  const { cart, clearCart } = useContext(ProductsContext)
+  const { cart, clearCart, isCartOpen } = useContext(ProductsContext)
 
   return (
-    <aside className='cart' style={{ display: 'block' }}>
+    <aside className='cart' style={{ display: isCartOpen ? 'block' : 'none' }}>
       <ul>
         {
           cart.map(item =>

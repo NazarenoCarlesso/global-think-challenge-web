@@ -6,7 +6,7 @@
   padding: 16px;
   padding-top: 40px;
   position: fixed;
-  right: 0px;
+  left: 0px;
   top: 0px;
   overflow-y: scroll;
   height: 100vh;
@@ -24,6 +24,9 @@
 
 .cart .image {
   border-radius: 12px;
+  width: 120px;
+  max-height: 120px;
+  min-height: 120px;
 }
 
 .cart-item footer {

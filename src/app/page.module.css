@@ -12,6 +12,7 @@
 
 .page .main {
   width: 80%;
+  min-height: 100vh;
 }
 
 @media (prefers-color-scheme: dark) {

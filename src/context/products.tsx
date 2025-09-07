@@ -1,6 +1,7 @@
 "use client"
 import { CartItem, Product } from "@/interfaces";
-import { createContext, Dispatch, ReactNode, SetStateAction, useReducer, useState } from "react";
+import { getAllProducts } from "@/services/products";
+import { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useReducer, useState } from "react";
 
 interface ProductContextType extends ProductsState {
   setProducts: (products: Product[]) => void
@@ -11,6 +12,8 @@ interface ProductContextType extends ProductsState {
   addToCart: (product: Product) => void
   decreaseFromCart: (id: number) => void
   clearCart: () => void
+  toggleCart: () => void
+  isCartOpen: boolean
 }
 
 interface ProductsState {
@@ -107,6 +110,11 @@ export const ProductsContext = createContext<ProductContextType>();
 export const ProductsProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(productsReducer, PRODUCTS_INITIAL_STATE);
   const [filter, setFilter] = useState<string | undefined>();
+  const [isCartOpen, setCartOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    getAllProducts().then(allProducts => setProducts(allProducts))
+  }, []);
 
   const filteredResults = filter
     ? state.products.filter(p => p.titulo.toLowerCase().includes(filter.toLowerCase()))
@@ -125,6 +133,8 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
 
   const clearCart = () => dispatch({ type: 'CLEAR_CART', payload: undefined })
 
+  const toggleCart = () => setCartOpen((state) => !state)
+
   return (
     <ProductsContext.Provider
       value={{
@@ -136,7 +146,9 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
         resultsCount,
         addToCart,
         decreaseFromCart,
-        clearCart
+        clearCart,
+        isCartOpen,
+        toggleCart
       }}>
       {children}
     </ProductsContext.Provider>
