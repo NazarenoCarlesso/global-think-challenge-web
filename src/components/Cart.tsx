@@ -1,11 +1,10 @@
 "use client"
-import { useContext } from "react";
-import { ProductsContext } from "@/context/ProductsContext";
 import "./Cart.css";
 import { CartItem } from "./CartItem";
+import { useProductsContext } from "@/hooks/useProductsContext";
 
 export const Cart = () => {
-  const { cart, clearCart, isCartOpen } = useContext(ProductsContext)
+  const { cart, clearCart, isCartOpen } = useProductsContext();
 
   return (
     <aside className='cart' style={{ display: isCartOpen ? 'block' : 'none' }}>

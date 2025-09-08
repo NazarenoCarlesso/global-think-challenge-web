@@ -1,21 +1,20 @@
 "use client"
 import Image from "next/image"
 import "./ProductsList.css"
-import { useContext } from "react"
-import { ProductsContext } from "@/context/ProductsContext"
 import { useRouter } from "next/navigation"
 import { ProductsLoading } from "@/components/ProductsLoading"
 import { ProductsEmpty } from "@/components/ProductsEmpty"
+import { useProductsContext } from "@/hooks/useProductsContext"
 
 export const ProductsList = () => {
-  const { filteredResults: products, loading, favorites, setFavorite } = useContext(ProductsContext);
+  const { filteredResults: products, loading, favorites, setFavorite } = useProductsContext();
   const router = useRouter();
 
   const handleFavButton = (id: number) => setFavorite(id)
 
   if (loading) { return (<ProductsLoading />); };
 
-  if (!products || products.length === 0) { return <ProductsEmpty /> };
+  if (!products || !products.length) { return <ProductsEmpty /> };
 
   return (
     <div className='products'>

@@ -1,9 +1,8 @@
-import { useContext } from "react";
 import "./Header.css";
-import { ProductsContext } from "@/context/ProductsContext";
+import { useProductsContext } from "@/hooks/useProductsContext";
 
 export const Header = () => {
-  const { toggleCart, cart } = useContext(ProductsContext);
+  const { toggleCart, cart } = useProductsContext();
 
   const counter = cart.length
 

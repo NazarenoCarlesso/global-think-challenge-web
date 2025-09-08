@@ -1,11 +1,11 @@
 "use client"
-import { DEFAULT_CONTEXT_VALUE, PRODUCTS_INITIAL_STATE } from "@/constants";
+import { PRODUCTS_INITIAL_STATE } from "@/constants";
 import { Product, ProductContextType } from "@/interfaces";
 import { getAllProducts } from "@/services/products";
 import { createContext, ReactNode, useEffect, useReducer, useState } from "react";
 import { productsReducer } from "./productsReducer";
 
-export const ProductsContext = createContext<ProductContextType>(DEFAULT_CONTEXT_VALUE);
+export const ProductsContext = createContext<ProductContextType | null>(null);
 
 export const ProductsProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(productsReducer, PRODUCTS_INITIAL_STATE);

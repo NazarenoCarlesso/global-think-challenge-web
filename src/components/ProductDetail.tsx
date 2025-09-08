@@ -1,14 +1,13 @@
 "use client"
 import Image from "next/image";
 import "./ProductDetail.css";
-import { useContext } from "react";
-import { ProductsContext } from "@/context/ProductsContext";
 import { useRouter } from "next/navigation";
+import { useProductsContext } from "@/hooks/useProductsContext";
 
 interface ProductDetailProps { id: string }
 
 export const ProductDetail = ({ id }: ProductDetailProps) => {
-  const { products, addToCart } = useContext(ProductsContext)
+  const { products, addToCart } = useProductsContext();
 
   const router = useRouter()
 

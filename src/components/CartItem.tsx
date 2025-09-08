@@ -1,10 +1,9 @@
 import Image from "next/image";
 import { CartItem as CartItemProps } from "@/interfaces";
-import { useContext } from "react";
-import { ProductsContext } from "@/context/ProductsContext";
+import { useProductsContext } from "@/hooks/useProductsContext";
 
 export const CartItem = (item: CartItemProps) => {
-  const { addToCart, decreaseFromCart, removeFromCart } = useContext(ProductsContext);
+  const { addToCart, decreaseFromCart, removeFromCart } = useProductsContext();
   const { quantity, ...product } = item;
 
   return (

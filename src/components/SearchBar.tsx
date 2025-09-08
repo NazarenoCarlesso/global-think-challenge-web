@@ -1,10 +1,9 @@
 "use client"
-import { useContext } from "react";
 import "./SearchBar.css"
-import { ProductsContext } from "@/context/ProductsContext";
+import { useProductsContext } from "@/hooks/useProductsContext";
 
 export const SearchBar = () => {
-  const { setFilter, resultsCount, loading } = useContext(ProductsContext);
+  const { setFilter, resultsCount, loading } = useProductsContext();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilter(e.target.value)
