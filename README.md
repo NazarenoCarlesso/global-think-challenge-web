@@ -49,3 +49,17 @@ Una vez que el servidor esté corriendo, abrí tu navegador en [http://localhost
 ### Deploy en Vercel
 
 ![Vercel Deploy](https://deploy-badge.vercel.app/vercel/reactions-demo)
+
+## Screenshots
+
+![Screenshot_1](./screenshots/Screenshot_1.png)
+
+![Screenshot_2](./screenshots/Screenshot_2.png)
+
+![Screenshot_3](./screenshots/Screenshot_3.png)
+
+![Screenshot_4](./screenshots/Screenshot_4.png)
+
+![Screenshot_5](./screenshots/Screenshot_5.png)
+
+![Screenshot_6](./screenshots/Screenshot_6.png)

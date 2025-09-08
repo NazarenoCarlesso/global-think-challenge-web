@@ -16,7 +16,6 @@
 .cart li {
   padding: 0.5rem;
   margin-top: 4px;
-  max-height: 206px;
 }
 
 .cart ul {
@@ -28,6 +27,12 @@
   width: 120px;
   max-height: 120px;
   min-height: 120px;
+}
+
+.cart-item div {
+  border-radius: 12px;
+  width: 120px;
+  height: 120px;
 }
 
 .cart-item footer {
@@ -62,10 +67,18 @@
 .remove {
   position: relative;
   left: 96px;
-  top: -188px;
+  top: -120px;
 }
 
 .remove:hover {
   background-color: #f1a9a9;
   border: 1px solid #df7474;
+}
+
+.cart-item .cart-price {
+  font-size: 14px;
+}
+
+.cart-item .cart-title {
+    font-weight: 500;
 }
