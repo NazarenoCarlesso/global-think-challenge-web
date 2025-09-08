@@ -1,7 +1,7 @@
 "use client"
 import { useContext } from "react";
 import "./SearchBar.css"
-import { ProductsContext } from "@/context/products";
+import { ProductsContext } from "@/context/ProductsContext";
 
 export const SearchBar = () => {
   const { setFilter, resultsCount, loading } = useContext(ProductsContext);

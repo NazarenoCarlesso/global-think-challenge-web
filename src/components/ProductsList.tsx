@@ -2,7 +2,7 @@
 import Image from "next/image"
 import "./ProductsList.css"
 import { useContext } from "react"
-import { ProductsContext } from "@/context/products"
+import { ProductsContext } from "@/context/ProductsContext"
 import { useRouter } from "next/navigation"
 import { ProductsLoading } from "./ProductsLoading"
 import { ProductsEmpty } from "./ProductsEmpty"

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import "./Header.css";
-import { ProductsContext } from "@/context/products";
+import { ProductsContext } from "@/context/ProductsContext";
 
 export const Header = () => {
   const { toggleCart, cart } = useContext(ProductsContext);
