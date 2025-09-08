@@ -4,8 +4,8 @@ import "./ProductsList.css"
 import { useContext } from "react"
 import { ProductsContext } from "@/context/ProductsContext"
 import { useRouter } from "next/navigation"
-import { ProductsLoading } from "./ProductsLoading"
-import { ProductsEmpty } from "./ProductsEmpty"
+import { ProductsLoading } from "@/components/ProductsLoading"
+import { ProductsEmpty } from "@/components/ProductsEmpty"
 
 export const ProductsList = () => {
   const { filteredResults: products, loading, favorites, setFavorite } = useContext(ProductsContext);
