@@ -17,6 +17,8 @@ export const DEFAULT_CONTEXT_VALUE: ProductContextType = {
   setProducts: () => { },
   setFavorite: () => { },
   setFilter: () => { }, // Dispatch no hace nada por defecto
+  setCategoryFilter: () => { },
+  categoryFilter: undefined,
   filteredResults: [],
   resultsCount: 0,
   addToCart: () => { },

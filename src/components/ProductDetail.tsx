@@ -16,24 +16,61 @@ export const ProductDetail = ({ id }: ProductDetailProps) => {
   if (!product) return (<></>)
 
   return (
-    <div className='row product-detail'>
-      <div className='column'>
-        <Image src={product.imagen} alt={product.titulo} width={400} height={400} />
-        <h3>Descripción</h3>
-        <p>{product.descripcion}</p>
-      </div>
-      <div className='box'>
-        <h2>{product.titulo}</h2>
-        <h5>⭐⭐⭐⭐⭐ {product.rating}</h5>
-        <p>Calificación {product.rating} de 5. 177 opiniones</p>
-        <p>$ {product.precio}</p>
-        <p>Ver los medios de pago</p>
-        <p>Llega gratis hoy</p>
-        <p>Más formas de entrega</p>
-        <p>Devolución gratis</p>
-        <p>Tenés 30 días desde que lo recibís</p>
-        <p>Conocer más</p>
-        <footer>
+    <div className="product-detail">
+      <section className="product-detail__media">
+        <div className="product-detail__image">
+          {product.imagen ? (
+            <Image src={product.imagen} alt={product.titulo} width={600} height={600} />
+          ) : (
+            <div className="product-image-placeholder" role="img" aria-label={product.titulo} />
+          )}
+        </div>
+        <div className="product-description">
+          <h2>Descripción</h2>
+          <p>{product.descripcion}</p>
+        </div>
+      </section>
+      <aside className="product-summary">
+        <div className="product-summary__heading">
+          <span className="product-summary__eyebrow">{product.categoria}</span>
+          <h1>{product.titulo}</h1>
+          <div className="product-summary__rating">
+            <span aria-hidden="true">{"★".repeat(Math.round(product.rating))}</span>
+            <strong>{product.rating}</strong>
+            <span className="product-summary__rating-label">Calificación sobre 5</span>
+          </div>
+        </div>
+        <div className="product-summary__price">
+          <span>Precio</span>
+          <strong>$ {product.precio}</strong>
+        </div>
+        <div className="product-benefits">
+          <section className="product-benefit">
+            <span className="product-benefit__icon" aria-hidden="true">💳</span>
+            <div>
+              <h2>Medios de pago</h2>
+              <p>Consultá las opciones disponibles para tu compra.</p>
+              <span className="product-benefit__detail">Ver los medios de pago</span>
+            </div>
+          </section>
+          <section className="product-benefit">
+            <span className="product-benefit__icon" aria-hidden="true">📦</span>
+            <div>
+              <h2>Entrega</h2>
+              <p className="product-benefit__highlight">Llega gratis hoy</p>
+              <span className="product-benefit__detail">Más formas de entrega</span>
+            </div>
+          </section>
+          <section className="product-benefit">
+            <span className="product-benefit__icon" aria-hidden="true">↩</span>
+            <div>
+              <h2>Devolución gratis</h2>
+              <p>Tenés 30 días desde que lo recibís.</p>
+              <span className="product-benefit__detail">Conocer más</span>
+            </div>
+          </section>
+        </div>
+        <footer className="product-summary__actions">
           <button className='purchase' onClick={() => addToCart(product)}>
             Comprar
           </button>
@@ -41,7 +78,7 @@ export const ProductDetail = ({ id }: ProductDetailProps) => {
             Volver
           </button>
         </footer>
-      </div>
+      </aside>
     </div>
   )
 }

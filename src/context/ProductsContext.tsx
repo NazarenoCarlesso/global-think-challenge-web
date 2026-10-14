@@ -45,11 +45,14 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
   const removeFromCart = (id: number) => dispatch({ type: 'REMOVE_FROM_CART', payload: id });
 
   const clearCart = () => dispatch({ type: 'CLEAR_CART', payload: undefined });
-  // Filtro de búsqueda
+  // Filtros de búsqueda y categoría
   const [filter, setFilter] = useState<string | undefined>();
-  const filteredResults = filter
-    ? state.products.filter(p => p.titulo.toLowerCase().includes(filter.toLowerCase()))
-    : state.products;
+  const [categoryFilter, setCategoryFilter] = useState<string | undefined>();
+  const filteredResults = state.products.filter(product => {
+    const matchesSearch = !filter || product.titulo.toLowerCase().includes(filter.toLowerCase());
+    const matchesCategory = !categoryFilter || product.categoria === categoryFilter;
+    return matchesSearch && matchesCategory;
+  });
   // Resultados de búsqueda
   const resultsCount = filteredResults.length;
   // Toggle para el carrito
@@ -63,6 +66,8 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
         setProducts,
         setFavorite,
         setFilter,
+        setCategoryFilter,
+        categoryFilter,
         filteredResults,
         resultsCount,
         addToCart,

@@ -1,25 +1,8 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-} */
-
 html,
 body {
+  min-height: 100%;
   max-width: 100vw;
   overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: var(--font-geist-sans);
 }
 
 * {
@@ -33,29 +16,13 @@ a {
   text-decoration: none;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-} */
-
 button {
   appearance: none;
-  border-radius: 6px;
-  border: 1px solid #e2e2e2;
-  background-color: #f7f7f7;
-  font-family: var(--font-geist-sans);
+  font: inherit;
+  cursor: pointer;
 }
 
 input {
   appearance: none;
-  border-radius: 6px;
-  border: 1px solid #e2e2e2;
-  background-color: #f7f7f7;
-  font-family: var(--font-geist-sans);
-}
-
-button:hover {
-  border: 1px solid #d8d8d8;
-  background-color: #eeeeee;
+  font: inherit;
 }

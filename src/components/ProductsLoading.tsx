@@ -1,15 +1,15 @@
 export const ProductsLoading = () => {
   return (
     <div className='products'>
-      <ul>
-        <li className='animated-bg' />
-        <li className='animated-bg' />
-        <li className='animated-bg' />
-        <li className='animated-bg' />
-        <li className='animated-bg' />
-        <li className='animated-bg' />
-        <li className='animated-bg' />
-        <li className='animated-bg' />
+      <ul className="grid">
+        <li className="card animated-bg" />
+        <li className="card animated-bg" />
+        <li className="card animated-bg" />
+        <li className="card animated-bg" />
+        <li className="card animated-bg" />
+        <li className="card animated-bg" />
+        <li className="card animated-bg" />
+        <li className="card animated-bg" />
       </ul>
     </div>
   );

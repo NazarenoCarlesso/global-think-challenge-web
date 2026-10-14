@@ -1,17 +1,20 @@
-import Image from "next/image";
-
 export const ProductsEmpty = () => {
   return (
-    <div className='products not-found'>
-      <Image
-        src='https://static.tildacdn.net/tild3432-3335-4337-b130-363866343062/No_results_1.svg'
-        alt='No results'
-        width={600}
-        height={400}
-      />
-      <h1>No se encontraron productos</h1>
-      <p>No hay productos que coincidan con tu busqueda.</p>
-      <p>Intenta justificar tus filtros o verifica que el nombre que estás buscando sea correcto</p>
-    </div>
+    <section className="products empty-state" role="status">
+      <div className="empty-state__icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none">
+          <circle cx="21" cy="21" r="12" />
+          <path d="m30 30 9 9M16.5 21h9M21 16.5v9" />
+        </svg>
+      </div>
+      <span className="empty-state__eyebrow">0 resultados</span>
+      <h2>No se encontraron productos</h2>
+      <p>
+        No hay productos que coincidan con tu búsqueda o los filtros seleccionados.
+      </p>
+      <p className="empty-state__hint">
+        Probá con otro término o seleccioná una categoría diferente.
+      </p>
+    </section>
   );
 };

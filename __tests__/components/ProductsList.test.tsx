@@ -70,6 +70,8 @@ describe('ProductsList', () => {
       // ... otras propiedades del contexto
       setProducts: jest.fn(),
       setFilter: jest.fn(),
+      setCategoryFilter: jest.fn(),
+      categoryFilter: undefined,
       resultsCount: 0,
       addToCart: jest.fn(),
       decreaseFromCart: jest.fn(),
@@ -100,6 +102,8 @@ describe('ProductsList', () => {
       // ... otras propiedades
       setProducts: jest.fn(),
       setFilter: jest.fn(),
+      setCategoryFilter: jest.fn(),
+      categoryFilter: undefined,
       resultsCount: 0,
       addToCart: jest.fn(),
       decreaseFromCart: jest.fn(),
@@ -130,6 +134,8 @@ describe('ProductsList', () => {
       // ... otras propiedades
       setProducts: jest.fn(),
       setFilter: jest.fn(),
+      setCategoryFilter: jest.fn(),
+      categoryFilter: undefined,
       resultsCount: 0,
       addToCart: jest.fn(),
       decreaseFromCart: jest.fn(),
@@ -170,6 +176,8 @@ describe('ProductsList', () => {
       // ... otras propiedades
       setProducts: jest.fn(),
       setFilter: jest.fn(),
+      setCategoryFilter: jest.fn(),
+      categoryFilter: undefined,
       resultsCount: 0,
       addToCart: jest.fn(),
       decreaseFromCart: jest.fn(),
@@ -204,6 +212,8 @@ describe('ProductsList', () => {
       // ... otras propiedades
       setProducts: jest.fn(),
       setFilter: jest.fn(),
+      setCategoryFilter: jest.fn(),
+      categoryFilter: undefined,
       resultsCount: 0,
       addToCart: jest.fn(),
       decreaseFromCart: jest.fn(),
@@ -219,8 +229,7 @@ describe('ProductsList', () => {
       </ProductsContext.Provider>
     );
 
-    // Busca el botón de favoritos del primer producto
-    const favButton = screen.getAllByRole('button')[0];
+    const favButton = screen.getAllByRole('button', { name: '🧡' })[0];
     fireEvent.click(favButton);
 
     expect(mockSetFavorite).toHaveBeenCalledWith(1);
