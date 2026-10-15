@@ -69,6 +69,8 @@ describe('ProductsList', () => {
       setFavorite: jest.fn(),
       // ... otras propiedades del contexto
       setProducts: jest.fn(),
+      filter: undefined,
+      hasLoadedProducts: false,
       setFilter: jest.fn(),
       setCategoryFilter: jest.fn(),
       categoryFilter: undefined,
@@ -107,6 +109,8 @@ describe('ProductsList', () => {
       setFavorite: jest.fn(),
       // ... otras propiedades
       setProducts: jest.fn(),
+      filter: undefined,
+      hasLoadedProducts: true,
       setFilter: jest.fn(),
       setCategoryFilter: jest.fn(),
       categoryFilter: undefined,
@@ -134,6 +138,45 @@ describe('ProductsList', () => {
     expect(screen.getByText('No hay productos para mostrar.')).toBeInTheDocument();
   });
 
+  it("should show an error when products cannot be loaded", () => {
+    const mockContext: ProductContextType = {
+      products: [],
+      cart: [],
+      filteredResults: [],
+      loading: false,
+      favorites: [],
+      setProducts: jest.fn(),
+      setFavorite: jest.fn(),
+      filter: undefined,
+      hasLoadedProducts: false,
+      setFilter: jest.fn(),
+      setCategoryFilter: jest.fn(),
+      categoryFilter: undefined,
+      categories: [],
+      currentPage: 1,
+      totalPages: 1,
+      totalProducts: 0,
+      setPage: jest.fn(),
+      error: "Fallo de red",
+      resultsCount: 0,
+      addToCart: jest.fn(),
+      decreaseFromCart: jest.fn(),
+      clearCart: jest.fn(),
+      toggleCart: jest.fn(),
+      isCartOpen: false,
+      removeFromCart: jest.fn(),
+    };
+
+    render(
+      <ProductsContext.Provider value={mockContext}>
+        <ProductsList />
+      </ProductsContext.Provider>
+    );
+
+    expect(screen.getByRole("alert")).toHaveTextContent("No se pudieron cargar los productos: Fallo de red");
+    expect(screen.queryByText("Cargando productos...")).not.toBeInTheDocument();
+  });
+
   // Test 3: Renderiza la lista de productos correctamente
   it('should render the list of products correctly', () => {
     const mockContext: ProductContextType = {
@@ -145,6 +188,8 @@ describe('ProductsList', () => {
       setFavorite: jest.fn(),
       // ... otras propiedades
       setProducts: jest.fn(),
+      filter: undefined,
+      hasLoadedProducts: true,
       setFilter: jest.fn(),
       setCategoryFilter: jest.fn(),
       categoryFilter: undefined,
@@ -193,6 +238,8 @@ describe('ProductsList', () => {
       setFavorite: jest.fn(),
       // ... otras propiedades
       setProducts: jest.fn(),
+      filter: undefined,
+      hasLoadedProducts: true,
       setFilter: jest.fn(),
       setCategoryFilter: jest.fn(),
       categoryFilter: undefined,
@@ -223,6 +270,47 @@ describe('ProductsList', () => {
     expect(mockPush).toHaveBeenCalledWith('/detail/1');
   });
 
+  it("should request the previous page when the previous button is clicked", () => {
+    const setPage = jest.fn();
+    const mockContext: ProductContextType = {
+      products: [],
+      cart: [],
+      filteredResults: mockProducts,
+      loading: false,
+      favorites: [],
+      setProducts: jest.fn(),
+      setFavorite: jest.fn(),
+      filter: undefined,
+      hasLoadedProducts: true,
+      setFilter: jest.fn(),
+      setCategoryFilter: jest.fn(),
+      categoryFilter: undefined,
+      categories: [],
+      currentPage: 2,
+      totalPages: 3,
+      totalProducts: 20,
+      setPage,
+      error: null,
+      resultsCount: 20,
+      addToCart: jest.fn(),
+      decreaseFromCart: jest.fn(),
+      clearCart: jest.fn(),
+      toggleCart: jest.fn(),
+      isCartOpen: false,
+      removeFromCart: jest.fn(),
+    };
+
+    render(
+      <ProductsContext.Provider value={mockContext}>
+        <ProductsList />
+      </ProductsContext.Provider>
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Anterior" }));
+
+    expect(setPage).toHaveBeenCalledWith(1);
+  });
+
   // Test 5: Simula el clic en el botón de favoritos
   it('should call setFavorite with the correct product ID when favorite button is clicked', () => {
     const mockSetFavorite = jest.fn();
@@ -235,6 +323,8 @@ describe('ProductsList', () => {
       setFavorite: mockSetFavorite,
       // ... otras propiedades
       setProducts: jest.fn(),
+      filter: undefined,
+      hasLoadedProducts: true,
       setFilter: jest.fn(),
       setCategoryFilter: jest.fn(),
       categoryFilter: undefined,

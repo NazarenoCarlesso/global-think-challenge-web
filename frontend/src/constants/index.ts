@@ -16,6 +16,8 @@ export const DEFAULT_CONTEXT_VALUE: ProductContextType = {
   // Funciones y otros valores con implementaciones "vacías" o iniciales
   setProducts: () => { },
   setFavorite: () => { },
+  filter: undefined,
+  hasLoadedProducts: false,
   setFilter: () => { }, // Dispatch no hace nada por defecto
   setCategoryFilter: () => { },
   categoryFilter: undefined,

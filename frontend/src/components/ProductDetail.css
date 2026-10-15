@@ -8,6 +8,28 @@
   margin: 52px auto 40px;
 }
 
+.product-detail-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  width: 100%;
+  min-height: 240px;
+  color: var(--muted);
+}
+
+.product-detail-state button {
+  min-height: 42px;
+  padding: 9px 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--input-bg);
+  color: var(--text);
+  font: 500 15px "Space Grotesk";
+  cursor: pointer;
+}
+
 .product-detail__media {
   display: flex;
   flex-direction: column;

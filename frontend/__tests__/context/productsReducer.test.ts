@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PRODUCTS_INITIAL_STATE } from "@/constants";
 import { productsReducer } from "@/context/productsReducer";
 import { Product, ProductsAction, ProductsState } from "@/interfaces";
@@ -32,9 +31,46 @@ describe('productsReducer', () => {
 
   // Caso por defecto: no cambia el estado para acciones desconocidas
   it('should return the initial state for unknown action types', () => {
-    const action = { type: 'UNKNOWN_ACTION', payload: null };
-    const newState = productsReducer(initialState, action as any);
+    const action = { type: 'UNKNOWN_ACTION', payload: null } as never;
+    const newState = productsReducer(initialState, action);
     expect(newState).toEqual(initialState);
+  });
+
+  it("should update loading without changing the other state", () => {
+    const stateWithProducts: ProductsState = {
+      ...initialState,
+      products: [MOCK_PRODUCT],
+      favorites: [MOCK_PRODUCT.id],
+      cart: [{ ...MOCK_PRODUCT, quantity: 2 }],
+    };
+
+    const loadingState = productsReducer(stateWithProducts, {
+      type: "SET_LOADING",
+      payload: true,
+    });
+
+    expect(loadingState).toEqual({ ...stateWithProducts, loading: true });
+    expect(productsReducer(loadingState, { type: "SET_LOADING", payload: false }))
+      .toEqual({ ...stateWithProducts, loading: false });
+  });
+
+  it("should restore persisted favorites and cart without replacing products or loading", () => {
+    const stateWithProducts: ProductsState = {
+      ...initialState,
+      products: [MOCK_PRODUCT],
+      loading: true,
+    };
+    const savedCart = [{ ...MOCK_PRODUCT_2, quantity: 3 }];
+    const restored = productsReducer(stateWithProducts, {
+      type: "RESTORE_PERSISTED_STATE",
+      payload: { favorites: [MOCK_PRODUCT_2.id], cart: savedCart },
+    });
+
+    expect(restored).toEqual({
+      ...stateWithProducts,
+      favorites: [MOCK_PRODUCT_2.id],
+      cart: savedCart,
+    });
   });
 
   // --- Test para la acción 'SET_PRODUCTS' ---
@@ -63,6 +99,27 @@ describe('productsReducer', () => {
     expect(newState.cart).toEqual(currentState.cart);
     expect(newState.favorites).toEqual(currentState.favorites);
     expect(newState.products).toEqual([MOCK_PRODUCT_2]);
+  });
+
+  it("should respect initializeFavorites when initializing and preserving favorites", () => {
+    const productsWithFavorites = [MOCK_PRODUCT_2];
+    const existingState: ProductsState = {
+      ...initialState,
+      products: [MOCK_PRODUCT],
+      favorites: [MOCK_PRODUCT.id],
+    };
+
+    expect(productsReducer(existingState, {
+      type: "SET_PRODUCTS",
+      payload: productsWithFavorites,
+      initializeFavorites: true,
+    }).favorites).toEqual([MOCK_PRODUCT_2.id]);
+
+    expect(productsReducer(initialState, {
+      type: "SET_PRODUCTS",
+      payload: productsWithFavorites,
+      initializeFavorites: false,
+    }).favorites).toEqual([]);
   });
 
   // --- Test para la acción 'SET_FAVORITE' ---
@@ -104,6 +161,18 @@ describe('productsReducer', () => {
     expect(newState.cart[0].quantity).toBe(2);
   });
 
+  it("should not change the cart when increasing a product that is not present", () => {
+    const stateWithCart: ProductsState = {
+      ...initialState,
+      cart: [{ ...MOCK_PRODUCT, quantity: 1 }],
+    };
+
+    expect(productsReducer(stateWithCart, {
+      type: "INCREASE_FROM_CART",
+      payload: MOCK_PRODUCT_2.id,
+    })).toEqual(stateWithCart);
+  });
+
   // --- Test para la acción 'DECREASE_FROM_CART' ---
   it('should decrease the quantity of a product in the cart', () => {
     const stateWithCart: ProductsState = {
@@ -115,6 +184,18 @@ describe('productsReducer', () => {
     expect(newState.cart[0].quantity).toBe(1);
   });
 
+  it("should not change the cart when decreasing a product that is not present", () => {
+    const stateWithCart: ProductsState = {
+      ...initialState,
+      cart: [{ ...MOCK_PRODUCT, quantity: 2 }],
+    };
+
+    expect(productsReducer(stateWithCart, {
+      type: "DECREASE_FROM_CART",
+      payload: MOCK_PRODUCT_2.id,
+    })).toEqual(stateWithCart);
+  });
+
   // --- Test para la acción 'REMOVE_FROM_CART' ---
   it('should remove a product from the cart', () => {
     const stateWithCart: ProductsState = {
@@ -124,6 +205,18 @@ describe('productsReducer', () => {
     const action = { type: 'REMOVE_FROM_CART', payload: MOCK_PRODUCT.id };
     const newState = productsReducer(stateWithCart, action as ProductsAction);
     expect(newState.cart).toEqual([{ ...MOCK_PRODUCT_2, quantity: 1 }]);
+  });
+
+  it("should keep the cart unchanged when removing an absent product", () => {
+    const stateWithCart: ProductsState = {
+      ...initialState,
+      cart: [{ ...MOCK_PRODUCT, quantity: 1 }],
+    };
+
+    expect(productsReducer(stateWithCart, {
+      type: "REMOVE_FROM_CART",
+      payload: MOCK_PRODUCT_2.id,
+    })).toEqual(stateWithCart);
   });
 
   // --- Test para la acción 'CLEAR_CART' ---

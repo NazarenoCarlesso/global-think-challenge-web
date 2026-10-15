@@ -1,19 +1,65 @@
 "use client"
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import "./ProductDetail.css";
 import { useRouter } from "next/navigation";
 import { useProductsContext } from "@/hooks/useProductsContext";
+import { getProductById } from "@/services/products";
+import { Product } from "@/interfaces";
 
 interface ProductDetailProps { id: string }
 
 export const ProductDetail = ({ id }: ProductDetailProps) => {
-  const { products, addToCart } = useProductsContext();
+  const { addToCart } = useProductsContext();
+  const router = useRouter();
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const router = useRouter()
+  useEffect(() => {
+    let active = true;
+    setProduct(null);
+    setLoading(true);
+    setError(null);
 
-  const product = products.find(p => String(p.id) === id)
+    getProductById(id)
+      .then((loadedProduct) => {
+        if (active) setProduct(loadedProduct);
+      })
+      .catch((loadError: unknown) => {
+        if (!active) return;
+        setError(loadError instanceof Error ? loadError.message : "No se pudo cargar el producto.");
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
 
-  if (!product) return (<></>)
+    return () => {
+      active = false;
+    };
+  }, [id]);
+
+  if (loading) {
+    return <section className="product-detail-state" role="status">Cargando producto...</section>;
+  }
+
+  if (error) {
+    return (
+      <section className="product-detail-state" role="alert">
+        <p>No se pudo cargar el producto: {error}</p>
+        <button className="return" type="button" onClick={() => router.push("/")}>Volver</button>
+      </section>
+    );
+  }
+
+  if (!product) {
+    return (
+      <section className="product-detail-state" role="status">
+        <p>No se encontró el producto solicitado.</p>
+        <button className="return" type="button" onClick={() => router.push("/")}>Volver</button>
+      </section>
+    );
+  }
 
   return (
     <div className="product-detail">

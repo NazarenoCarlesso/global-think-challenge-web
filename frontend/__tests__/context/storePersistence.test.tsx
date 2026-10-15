@@ -32,17 +32,33 @@ const getProductsMock = jest.mocked(getProducts);
 const getCategoriesMock = jest.mocked(getCategories);
 
 const StoreProbe = () => {
-  const { products, favorites, cart, setFavorite, addToCart, clearCart } = useProductsContext();
+  const {
+    products,
+    favorites,
+    cart,
+    isCartOpen,
+    setFavorite,
+    addToCart,
+    decreaseFromCart,
+    removeFromCart,
+    clearCart,
+    toggleCart,
+  } = useProductsContext();
 
   return (
     <section>
       <output data-testid="favorites">{favorites.join(",")}</output>
+      <output data-testid="cart-open">{String(isCartOpen)}</output>
       <output data-testid="cart">
         {cart.map((item) => `${item.id}:${item.quantity}`).join(",")}
       </output>
       <button type="button" onClick={() => setFavorite(1)}>Toggle favorite</button>
       <button type="button" onClick={() => addToCart(products[0])}>Add product</button>
+      <button type="button" onClick={() => decreaseFromCart(1)}>Decrease product</button>
+      <button type="button" onClick={() => decreaseFromCart(999)}>Decrease missing product</button>
+      <button type="button" onClick={() => removeFromCart(1)}>Remove product</button>
       <button type="button" onClick={clearCart}>Clear cart</button>
+      <button type="button" onClick={toggleCart}>Toggle cart</button>
     </section>
   );
 };
@@ -111,6 +127,71 @@ describe("favorite and cart persistence", () => {
     expect(JSON.parse(window.localStorage.getItem("global-think-store") ?? "{}").cart).toEqual([]);
   });
 
+  it("persists whether the cart is open and restores it after remounting", async () => {
+    const { unmount } = renderStore();
+    await screen.findByRole("button", { name: "Toggle cart" });
+    await waitFor(() => expect(screen.getByTestId("cart-open")).toHaveTextContent("false"));
+
+    fireEvent.click(screen.getByRole("button", { name: "Toggle cart" }));
+    await waitFor(() => {
+      expect(screen.getByTestId("cart-open")).toHaveTextContent("true");
+      expect(JSON.parse(window.localStorage.getItem("global-think-store") ?? "{}").isCartOpen).toBe(true);
+    });
+
+    unmount();
+    renderStore();
+    await waitFor(() => expect(screen.getByTestId("cart-open")).toHaveTextContent("true"));
+
+    fireEvent.click(screen.getByRole("button", { name: "Toggle cart" }));
+    await waitFor(() => {
+      expect(screen.getByTestId("cart-open")).toHaveTextContent("false");
+      expect(JSON.parse(window.localStorage.getItem("global-think-store") ?? "{}").isCartOpen).toBe(false);
+    });
+  });
+
+  it("decreases cart quantity, removes the last unit, and ignores absent products", async () => {
+    window.localStorage.setItem("global-think-store", JSON.stringify({
+      favorites: [],
+      cart: [{ ...product, quantity: 2 }],
+    }));
+    renderStore();
+
+    await waitFor(() => expect(screen.getByTestId("cart")).toHaveTextContent("1:2"));
+
+    fireEvent.click(screen.getByRole("button", { name: "Decrease product" }));
+    await waitFor(() => expect(screen.getByTestId("cart")).toHaveTextContent("1:1"));
+
+    fireEvent.click(screen.getByRole("button", { name: "Decrease product" }));
+    await waitFor(() => expect(screen.getByTestId("cart")).toHaveTextContent(""));
+
+    fireEvent.click(screen.getByRole("button", { name: "Decrease missing product" }));
+    expect(screen.getByTestId("cart")).toHaveTextContent("");
+    expect(JSON.parse(window.localStorage.getItem("global-think-store") ?? "{}").cart).toEqual([]);
+  });
+
+  it("removes the selected cart item and preserves the others", async () => {
+    window.localStorage.setItem("global-think-store", JSON.stringify({
+      favorites: [],
+      cart: [
+        { ...product, quantity: 2 },
+        { ...anotherProduct, quantity: 1 },
+      ],
+    }));
+    renderStore();
+
+    await waitFor(() => {
+      expect(screen.getByTestId("cart")).toHaveTextContent("1:2,2:1");
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Remove product" }));
+
+    await waitFor(() => {
+      expect(screen.getByTestId("cart")).toHaveTextContent("2:1");
+      expect(JSON.parse(window.localStorage.getItem("global-think-store") ?? "{}").cart)
+        .toEqual([{ ...anotherProduct, quantity: 1 }]);
+    });
+  });
+
   it("keeps an intentionally empty saved favorites list instead of reseeding API favorites", async () => {
     window.localStorage.setItem("global-think-store", JSON.stringify({
       favorites: [],
@@ -131,6 +212,25 @@ describe("favorite and cart persistence", () => {
       favorites: [],
       cart: [],
       hasStoredFavorites: false,
+      isCartOpen: false,
+    });
+    expect(errorSpy).toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
+  it("defaults an invalid cart-open value and reports it", () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    window.localStorage.setItem("global-think-store", JSON.stringify({
+      favorites: [],
+      cart: [],
+      isCartOpen: "open",
+    }));
+
+    expect(readPersistedStoreState(window.localStorage)).toEqual({
+      favorites: [],
+      cart: [],
+      hasStoredFavorites: true,
+      isCartOpen: false,
     });
     expect(errorSpy).toHaveBeenCalled();
     errorSpy.mockRestore();

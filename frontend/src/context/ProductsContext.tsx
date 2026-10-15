@@ -2,7 +2,7 @@
 import { PRODUCTS_INITIAL_STATE } from "@/constants";
 import { Product, ProductContextType } from "@/interfaces";
 import { getCategories, getProducts } from "@/services/products";
-import { createContext, ReactNode, useEffect, useReducer, useState } from "react";
+import { createContext, ReactNode, useCallback, useEffect, useReducer, useState } from "react";
 import { readPersistedStoreState, writePersistedStoreState } from "./storePersistence";
 import { productsReducer } from "./productsReducer";
 
@@ -19,6 +19,7 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
   const [categories, setCategories] = useState<string[]>([]);
   const [filter, setFilterState] = useState<string | undefined>();
   const [categoryFilter, setCategoryFilterState] = useState<string | undefined>();
+  const [isCartOpen, setCartOpen] = useState<boolean>(false);
   const [persistenceReady, setPersistenceReady] = useState(false);
   const [productsLoaded, setProductsLoaded] = useState(false);
   const [hasStoredFavorites, setHasStoredFavorites] = useState(false);
@@ -33,6 +34,7 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
           cart: persistedState.cart,
         },
       });
+      setCartOpen(persistedState.isCartOpen);
       setHasStoredFavorites(persistedState.hasStoredFavorites);
     } catch (loadError) {
       console.error("No se pudo acceder a la persistencia de favoritos y carrito:", loadError);
@@ -48,11 +50,12 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
       writePersistedStoreState(window.localStorage, {
         favorites: state.favorites,
         cart: state.cart,
+        isCartOpen,
       });
     } catch (saveError) {
       console.error("No se pudo guardar favoritos y carrito:", saveError);
     }
-  }, [persistenceReady, productsLoaded, state.favorites, state.cart]);
+  }, [persistenceReady, productsLoaded, state.favorites, state.cart, isCartOpen]);
 
   useEffect(() => {
     let active = true;
@@ -107,10 +110,10 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
   const setProducts = (products: Product[]) => dispatch({ type: 'SET_PRODUCTS', payload: products });
 
   const setPage = (page: number) => setCurrentPage(Math.min(Math.max(page, 1), totalPages));
-  const setFilter: ProductContextType["setFilter"] = (value) => {
+  const setFilter: ProductContextType["setFilter"] = useCallback((value) => {
     setCurrentPage(1);
     setFilterState(value);
-  };
+  }, []);
   const setCategoryFilter = (category: string | undefined) => {
     setCurrentPage(1);
     setCategoryFilterState(category);
@@ -146,7 +149,6 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
   const filteredResults = state.products;
   const resultsCount = totalProducts;
   // Toggle para el carrito
-  const [isCartOpen, setCartOpen] = useState<boolean>(false);
   const toggleCart = () => setCartOpen((state) => !state);
   // Provider
   return (
@@ -155,6 +157,8 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
         ...state,
         setProducts,
         setFavorite,
+        filter,
+        hasLoadedProducts: productsLoaded,
         setFilter,
         setCategoryFilter,
         categoryFilter,

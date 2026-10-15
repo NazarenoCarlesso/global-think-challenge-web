@@ -36,6 +36,8 @@ export type ProductsAction =
 export interface ProductContextType extends ProductsState {
   setProducts: (products: Product[]) => void
   setFavorite: (id: number) => void
+  filter: string | undefined
+  hasLoadedProducts: boolean
   setFilter: Dispatch<SetStateAction<string | undefined>>
   setCategoryFilter: (category: string | undefined) => void
   categoryFilter: string | undefined

@@ -4,12 +4,14 @@ const STORAGE_KEY = "global-think-store";
 
 export type PersistedStoreState = Pick<ProductsState, "favorites" | "cart"> & {
   hasStoredFavorites: boolean;
+  isCartOpen: boolean;
 };
 
 const emptyPersistedState = (): PersistedStoreState => ({
   favorites: [],
   cart: [],
   hasStoredFavorites: false,
+  isCartOpen: false,
 });
 
 const isPositiveInteger = (value: unknown): value is number => (
@@ -66,21 +68,24 @@ export const readPersistedStoreState = (
   const favorites = getStoredFavorites(stored.favorites);
   const storedCart = Array.isArray(stored.cart) ? stored.cart : [];
   const cartIsValid = Array.isArray(stored.cart) && storedCart.every(isCartItem);
+  const cartOpenIsValid = typeof stored.isCartOpen === "boolean"
+    || !Object.prototype.hasOwnProperty.call(stored, "isCartOpen");
 
-  if (favorites === null || !cartIsValid) {
-    console.error("La persistencia de favoritos o carrito tiene datos inválidos; se ignorará el dato afectado.");
+  if (favorites === null || !cartIsValid || !cartOpenIsValid) {
+    console.error("La persistencia de favoritos, carrito o estado de apertura tiene datos inválidos; se ignorará el dato afectado.");
   }
 
   return {
     favorites: favorites ?? [],
     cart: cartIsValid ? storedCart.filter(isCartItem) : [],
     hasStoredFavorites: favorites !== null,
+    isCartOpen: typeof stored.isCartOpen === "boolean" ? stored.isCartOpen : false,
   };
 };
 
 export const writePersistedStoreState = (
   storage: Pick<Storage, "setItem">,
-  state: Pick<ProductsState, "favorites" | "cart">
+  state: Pick<ProductsState, "favorites" | "cart"> & Pick<PersistedStoreState, "isCartOpen">
 ) => {
   storage.setItem(STORAGE_KEY, JSON.stringify(state));
 };

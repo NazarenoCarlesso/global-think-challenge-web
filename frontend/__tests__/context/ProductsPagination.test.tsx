@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { ProductsProvider } from "@/context/ProductsContext";
 import { ProductsList } from "@/components/ProductsList";
 import { SearchBar } from "@/components/SearchBar";
@@ -111,6 +111,18 @@ describe("Products pagination and filters", () => {
     expect(mockGetProducts).toHaveBeenLastCalledWith(2, 8, undefined, undefined);
   });
 
+  it("returns to the previous page", async () => {
+    await renderStore();
+
+    fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
+    expect(await screen.findByRole("button", { name: "Producto 9" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Anterior" }));
+
+    expect(await screen.findByRole("button", { name: "Apple iPhone" })).toBeInTheDocument();
+    expect(screen.getByText("Página 1 de 4")).toBeInTheDocument();
+    expect(mockGetProducts).toHaveBeenLastCalledWith(1, 8, undefined, undefined);
+  });
+
   it("filters by category without removing the other category buttons", async () => {
     await renderStore();
 
@@ -133,10 +145,47 @@ describe("Products pagination and filters", () => {
       target: { value: "Sony" },
     });
 
+    await waitFor(() => {
+      expect(mockGetProducts).toHaveBeenLastCalledWith(1, 8, "Sony", undefined);
+    });
     expect(await screen.findByRole("button", { name: "Sony Camera" })).toBeInTheDocument();
     expect(screen.getByText("1 productos")).toBeInTheDocument();
-    expect(mockGetProducts).toHaveBeenLastCalledWith(1, 8, "Sony", undefined);
     expect(screen.queryByRole("button", { name: "Producto 9" })).not.toBeInTheDocument();
+  });
+
+  it("keeps the search input focused and preserves its value while results load", async () => {
+    await renderStore();
+
+    let resolveSearch: ((result: Awaited<ReturnType<typeof mockPaginatedApi>>) => void) | undefined;
+    mockGetProducts.mockImplementation((page, perPage, search, category) => {
+      if (search) {
+        return new Promise((resolve) => {
+          resolveSearch = resolve;
+        });
+      }
+      return mockPaginatedApi(page, perPage, search, category);
+    });
+
+    const input = screen.getByRole("searchbox", { name: "Buscar productos" });
+    input.focus();
+    fireEvent.change(input, { target: { value: "Sony" } });
+
+    expect(input).toHaveFocus();
+    expect(input).toHaveValue("Sony");
+    await waitFor(() => expect(mockGetProducts).toHaveBeenLastCalledWith(1, 8, "Sony", undefined));
+    expect(input).toBeInTheDocument();
+    expect(input).toHaveFocus();
+    expect(input).toHaveValue("Sony");
+    expect(screen.getByRole("button", { name: "Apple iPhone" })).toBeInTheDocument();
+    expect(screen.getByRole("list")).toBeInTheDocument();
+    expect(document.querySelector(".animated-bg")).not.toBeInTheDocument();
+
+    await act(async () => {
+      resolveSearch?.(await mockPaginatedApi(1, 8, "Sony"));
+    });
+
+    expect(await screen.findByRole("button", { name: "Sony Camera" })).toBeInTheDocument();
+    expect(input).toHaveValue("Sony");
   });
 
   it("combines search and category filters in the API request", async () => {
@@ -148,9 +197,11 @@ describe("Products pagination and filters", () => {
       target: { value: "Apple" },
     });
 
+    await waitFor(() => {
+      expect(mockGetProducts).toHaveBeenLastCalledWith(1, 8, "Apple", "Accesorios");
+    });
     expect(await screen.findByRole("button", { name: "Apple Headphones" })).toBeInTheDocument();
     expect(screen.getByText("2 productos")).toBeInTheDocument();
-    expect(mockGetProducts).toHaveBeenLastCalledWith(1, 8, "Apple", "Accesorios");
     expect(screen.queryByRole("button", { name: "Apple MacBook" })).not.toBeInTheDocument();
   });
 

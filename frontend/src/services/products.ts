@@ -40,14 +40,15 @@ const normalizeProducts = (products: ProductsDatabase["products"]): Product[] =>
   }))
 );
 
-const getProductsDatabase = async () => {
-  if (!PRODUCTS_DATA_URL) {
-    throw new Error("Falta configurar NEXT_PUBLIC_PRODUCTS_DATA_URL.");
-  }
+const normalizeProduct = (product: ProductsDatabase["products"][number]): Product => ({
+  ...product,
+  id: Number(product.id),
+});
 
+const getProductsDatabase = async (dataUrl: string) => {
   if (!productsDatabasePromise) {
     productsDatabasePromise = axios
-      .get<ProductsDatabase>(PRODUCTS_DATA_URL)
+      .get<ProductsDatabase>(dataUrl)
       .then(({ data }) => {
         if (!data || !Array.isArray(data.products)) {
           throw new Error("El JSON remoto no contiene una colección válida de productos.");
@@ -65,7 +66,7 @@ const getProductsDatabase = async () => {
 
 export const getCategories = async () => {
   if (PRODUCTS_DATA_URL) {
-    const database = await getProductsDatabase();
+    const database = await getProductsDatabase(PRODUCTS_DATA_URL);
     const categories = database.categories?.map((category) => (
       typeof category === "string" ? category : category.nombre
     )) ?? normalizeProducts(database.products).map((product) => product.categoria);
@@ -85,7 +86,7 @@ export const getProducts = async (
   category?: string
 ) => {
   if (PRODUCTS_DATA_URL) {
-    const database = await getProductsDatabase();
+    const database = await getProductsDatabase(PRODUCTS_DATA_URL);
     const filteredProducts = normalizeProducts(database.products).filter((product) => {
       const matchesSearch = !search
         || product.titulo.toLocaleLowerCase("es").includes(search.toLocaleLowerCase("es"));
@@ -124,3 +125,24 @@ export const getProducts = async (
     })),
   };
 }
+
+export const getProductById = async (id: string | number): Promise<Product | null> => {
+  const productId = Number(id);
+  if (!Number.isInteger(productId) || productId <= 0) return null;
+
+  if (PRODUCTS_DATA_URL) {
+    const database = await getProductsDatabase(PRODUCTS_DATA_URL);
+    const product = database.products.find((item) => Number(item.id) === productId);
+    return product ? normalizeProduct(product) : null;
+  }
+
+  try {
+    const response = await axios.get<ProductsDatabase["products"][number]>(
+      `${getApiUrl()}/products/${productId}`
+    );
+    return normalizeProduct(response.data);
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response?.status === 404) return null;
+    throw error;
+  }
+};
