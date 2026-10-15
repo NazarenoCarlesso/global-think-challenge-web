@@ -60,7 +60,7 @@ La colección de productos queda disponible en [http://localhost:3001/products](
 
 El backend muestra al iniciar los enlaces directos a cada endpoint. También registra cada petición con colores, método, ruta, código HTTP y duración, con una separación visual entre el mensaje de inicio y los logs.
 
-El frontend toma la URL de la API desde `frontend/.env.local`, configurada mediante `NEXT_PUBLIC_API_URL`. Al clonar el proyecto, copiá `frontend/.env.example` a `frontend/.env.local` y reiniciá Next.js después de cambiar la variable.
+En desarrollo local, el frontend toma la URL de json-server desde `NEXT_PUBLIC_API_URL`. Para un despliegue estático en Vercel, configurá `NEXT_PUBLIC_PRODUCTS_DATA_URL` con la URL pública de un `db.json`; por ejemplo: `https://raw.githubusercontent.com/NazarenoCarlesso/global-think-challenge-web/refs/heads/main/backend/db.json`. En ese modo el frontend descarga el JSON una vez y resuelve filtros, categorías y paginación en el navegador, sin necesitar un servidor json-server. Si ambas variables están definidas, la fuente JSON estática tiene prioridad. En Vercel, configurá la variable antes del build y volvé a desplegar.
 
 Los favoritos y el carrito se guardan en el `localStorage` del navegador para conservarse al recargar la página.
 

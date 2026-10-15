@@ -17,6 +17,13 @@ export interface ProductCategory {
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const PRODUCTS_DATA_URL = process.env.NEXT_PUBLIC_PRODUCTS_DATA_URL;
+type ProductsDatabase = {
+  products: Array<Omit<Product, "id"> & { id: number | string }>;
+  categories?: ProductCategory[] | string[];
+};
+
+let productsDatabasePromise: Promise<ProductsDatabase> | null = null;
 
 const getApiUrl = () => {
   if (!API_URL) {
@@ -26,7 +33,45 @@ const getApiUrl = () => {
   return API_URL.replace(/\/+$/, "");
 };
 
+const normalizeProducts = (products: ProductsDatabase["products"]): Product[] => (
+  products.map((product) => ({
+    ...product,
+    id: Number(product.id),
+  }))
+);
+
+const getProductsDatabase = async () => {
+  if (!PRODUCTS_DATA_URL) {
+    throw new Error("Falta configurar NEXT_PUBLIC_PRODUCTS_DATA_URL.");
+  }
+
+  if (!productsDatabasePromise) {
+    productsDatabasePromise = axios
+      .get<ProductsDatabase>(PRODUCTS_DATA_URL)
+      .then(({ data }) => {
+        if (!data || !Array.isArray(data.products)) {
+          throw new Error("El JSON remoto no contiene una colección válida de productos.");
+        }
+        return data;
+      })
+      .catch((error: unknown) => {
+        productsDatabasePromise = null;
+        throw error;
+      });
+  }
+
+  return productsDatabasePromise;
+};
+
 export const getCategories = async () => {
+  if (PRODUCTS_DATA_URL) {
+    const database = await getProductsDatabase();
+    const categories = database.categories?.map((category) => (
+      typeof category === "string" ? category : category.nombre
+    )) ?? normalizeProducts(database.products).map((product) => product.categoria);
+    return [...new Set(categories)].sort((a, b) => a.localeCompare(b, "es"));
+  }
+
   const response = await axios.get<ProductCategory[]>(`${getApiUrl()}/categories`);
   return response.data
     .map((category) => category.nombre)
@@ -39,6 +84,29 @@ export const getProducts = async (
   search?: string,
   category?: string
 ) => {
+  if (PRODUCTS_DATA_URL) {
+    const database = await getProductsDatabase();
+    const filteredProducts = normalizeProducts(database.products).filter((product) => {
+      const matchesSearch = !search
+        || product.titulo.toLocaleLowerCase("es").includes(search.toLocaleLowerCase("es"));
+      const matchesCategory = !category || product.categoria === category;
+      return matchesSearch && matchesCategory;
+    });
+    const pages = Math.ceil(filteredProducts.length / perPage);
+    const normalizedPage = Math.max(1, Math.min(page, pages || 1));
+    const start = (normalizedPage - 1) * perPage;
+
+    return {
+      first: pages ? 1 : null,
+      prev: normalizedPage > 1 ? normalizedPage - 1 : null,
+      next: normalizedPage < pages ? normalizedPage + 1 : null,
+      last: pages,
+      pages,
+      items: filteredProducts.length,
+      data: filteredProducts.slice(start, start + perPage),
+    };
+  }
+
   const response = await axios.get<PaginatedProducts>(`${getApiUrl()}/products`, {
     params: {
       _page: page,
