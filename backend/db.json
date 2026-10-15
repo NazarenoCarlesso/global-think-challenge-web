@@ -1,0 +1,768 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "titulo": "Canon EOS R7",
+      "descripcion": "Cámara mirrorless APS-C de 32,5 MP con estabilización integrada y ráfagas de alta velocidad.",
+      "precio": 1499.99,
+      "imagen": "",
+      "fav": true,
+      "rating": 4,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 2,
+      "titulo": "Samsung Galaxy S22",
+      "descripcion": "Smartphone con pantalla Dynamic AMOLED 2X de 6,1 pulgadas, 128 GB y cámara triple.",
+      "precio": 499.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 3,
+      "titulo": "iPhone 15",
+      "descripcion": "Teléfono Apple con pantalla Super Retina XDR de 6,1 pulgadas, USB-C y cámara principal de 48 MP.",
+      "precio": 799.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 4,
+      "titulo": "ASUS ROG Strix G16",
+      "descripcion": "Notebook gamer con Intel Core i7, gráficos GeForce RTX 4060 y pantalla de 165 Hz.",
+      "precio": 1599.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 5,
+      "titulo": "Samsung Galaxy Watch6",
+      "descripcion": "Reloj inteligente de 44 mm con seguimiento del sueño, actividad física y salud cardíaca.",
+      "precio": 249.99,
+      "imagen": "",
+      "fav": true,
+      "rating": 4,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 6,
+      "titulo": "Apple iPad Air de 11 pulgadas",
+      "descripcion": "Tablet con chip M2, pantalla Liquid Retina y compatibilidad con Apple Pencil Pro.",
+      "precio": 599.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 7,
+      "titulo": "JBL Charge 5",
+      "descripcion": "Parlante Bluetooth portátil resistente al agua con hasta 20 horas de batería y powerbank integrado.",
+      "precio": 179.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 8,
+      "titulo": "Keychron K8 Pro",
+      "descripcion": "Teclado mecánico inalámbrico tenkeyless con switches hot-swap y retroiluminación RGB.",
+      "precio": 119.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 9,
+      "titulo": "Samsung Odyssey G5 de 27 pulgadas",
+      "descripcion": "Monitor QHD curvo de 165 Hz con panel VA y compatibilidad con AMD FreeSync Premium.",
+      "precio": 329.99,
+      "imagen": "",
+      "fav": true,
+      "rating": 5,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 10,
+      "titulo": "Anker 735 Nano II 65W",
+      "descripcion": "Cargador compacto GaN de 65 W con dos puertos USB-C y uno USB-A.",
+      "precio": 49.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 11,
+      "titulo": "Samsung Galaxy S23",
+      "descripcion": "Smartphone compacto con pantalla AMOLED de 6,1 pulgadas, 256 GB y cámara principal de 50 MP.",
+      "precio": 649.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 12,
+      "titulo": "iPhone 15 Pro",
+      "descripcion": "iPhone con chip A17 Pro, cuerpo de titanio, pantalla ProMotion y sistema de cámaras Pro.",
+      "precio": 999.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 13,
+      "titulo": "Google Pixel 8",
+      "descripcion": "Smartphone con Google Tensor G3, pantalla OLED de 6,2 pulgadas y cámara con fotografía computacional.",
+      "precio": 599.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 14,
+      "titulo": "Samsung Galaxy Tab S9",
+      "descripcion": "Tablet con pantalla Dynamic AMOLED 2X de 11 pulgadas, S Pen incluido y resistencia al agua IP68.",
+      "precio": 799.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 15,
+      "titulo": "Sony Alpha a6400",
+      "descripcion": "Cámara mirrorless APS-C de 24,2 MP con enfoque automático en tiempo real y video 4K.",
+      "precio": 898,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 16,
+      "titulo": "Sony WH-1000XM5",
+      "descripcion": "Auriculares inalámbricos over-ear con cancelación de ruido adaptativa y hasta 30 horas de batería.",
+      "precio": 349.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 17,
+      "titulo": "Apple Watch Series 9",
+      "descripcion": "Reloj inteligente con pantalla Retina siempre activa, detección de actividad y GPS.",
+      "precio": 399.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 18,
+      "titulo": "Logitech MX Master 3S",
+      "descripcion": "Mouse inalámbrico ergonómico con sensor de 8000 DPI, clics silenciosos y rueda MagSpeed.",
+      "precio": 99.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 19,
+      "titulo": "Logitech Brio 4K",
+      "descripcion": "Webcam Ultra HD con encuadre automático, corrección de luz y micrófonos con reducción de ruido.",
+      "precio": 169.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 20,
+      "titulo": "Belkin BoostCharge Pro 3 en 1",
+      "descripcion": "Base de carga inalámbrica MagSafe para iPhone, Apple Watch y AirPods.",
+      "precio": 149.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 21,
+      "titulo": "Dell XPS 13",
+      "descripcion": "Notebook ultraliviana con Intel Core Ultra 7, pantalla InfinityEdge de 13,4 pulgadas y SSD de 1 TB.",
+      "precio": 1399.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 22,
+      "titulo": "MacBook Air de 13 pulgadas con M3",
+      "descripcion": "Notebook Apple con chip M3, 16 GB de memoria unificada y batería para todo el día.",
+      "precio": 1299.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 23,
+      "titulo": "Lenovo Legion 5",
+      "descripcion": "Notebook gamer con AMD Ryzen 7, GeForce RTX 4060 y pantalla WQXGA de 165 Hz.",
+      "precio": 1449.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 24,
+      "titulo": "LG UltraGear 27GP850-B",
+      "descripcion": "Monitor QHD Nano IPS de 27 pulgadas con frecuencia de 165 Hz y respuesta de 1 ms.",
+      "precio": 399.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 25,
+      "titulo": "Logitech G Pro X TKL Lightspeed",
+      "descripcion": "Teclado mecánico gamer inalámbrico tenkeyless con switches GX y teclas PBT.",
+      "precio": 199.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 26,
+      "titulo": "iPhone 15 Plus",
+      "descripcion": "Dispositivo tecnológico para entretenimiento y productividad, con diseño moderno y conectividad versátil.",
+      "precio": 899.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 27,
+      "titulo": "iPhone 16",
+      "descripcion": "Dispositivo tecnológico para entretenimiento y productividad, con diseño moderno y conectividad versátil.",
+      "precio": 899.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 28,
+      "titulo": "Samsung Galaxy S24",
+      "descripcion": "Dispositivo tecnológico para entretenimiento y productividad, con diseño moderno y conectividad versátil.",
+      "precio": 799.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 29,
+      "titulo": "Google Pixel 8 Pro",
+      "descripcion": "Dispositivo tecnológico para entretenimiento y productividad, con diseño moderno y conectividad versátil.",
+      "precio": 899.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 30,
+      "titulo": "Xiaomi 14",
+      "descripcion": "Dispositivo tecnológico para entretenimiento y productividad, con diseño moderno y conectividad versátil.",
+      "precio": 749.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 31,
+      "titulo": "Motorola Edge 50 Pro",
+      "descripcion": "Dispositivo tecnológico para entretenimiento y productividad, con diseño moderno y conectividad versátil.",
+      "precio": 599.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 32,
+      "titulo": "OnePlus 12",
+      "descripcion": "Dispositivo tecnológico para entretenimiento y productividad, con diseño moderno y conectividad versátil.",
+      "precio": 799.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 33,
+      "titulo": "iPad Pro de 11 pulgadas con M4",
+      "descripcion": "Dispositivo tecnológico para entretenimiento y productividad, con diseño moderno y conectividad versátil.",
+      "precio": 999.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 34,
+      "titulo": "iPad mini de sexta generación",
+      "descripcion": "Dispositivo tecnológico para entretenimiento y productividad, con diseño moderno y conectividad versátil.",
+      "precio": 499.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 35,
+      "titulo": "Samsung Galaxy Tab S9 FE",
+      "descripcion": "Dispositivo tecnológico para entretenimiento y productividad, con diseño moderno y conectividad versátil.",
+      "precio": 449.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 36,
+      "titulo": "Xiaomi Pad 6",
+      "descripcion": "Dispositivo tecnológico para entretenimiento y productividad, con diseño moderno y conectividad versátil.",
+      "precio": 349.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 37,
+      "titulo": "Sony ZV-E10",
+      "descripcion": "Dispositivo tecnológico para entretenimiento y productividad, con diseño moderno y conectividad versátil.",
+      "precio": 698,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 38,
+      "titulo": "Nikon Z fc",
+      "descripcion": "Dispositivo tecnológico para entretenimiento y productividad, con diseño moderno y conectividad versátil.",
+      "precio": 956.95,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 39,
+      "titulo": "Canon EOS R50",
+      "descripcion": "Dispositivo tecnológico para entretenimiento y productividad, con diseño moderno y conectividad versátil.",
+      "precio": 679.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 40,
+      "titulo": "GoPro HERO12 Black",
+      "descripcion": "Dispositivo tecnológico para entretenimiento y productividad, con diseño moderno y conectividad versátil.",
+      "precio": 399.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 41,
+      "titulo": "Nintendo Switch OLED",
+      "descripcion": "Dispositivo tecnológico para entretenimiento y productividad, con diseño moderno y conectividad versátil.",
+      "precio": 349.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 42,
+      "titulo": "Samsung QLED 55 pulgadas",
+      "descripcion": "Dispositivo tecnológico para entretenimiento y productividad, con diseño moderno y conectividad versátil.",
+      "precio": 899.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 43,
+      "titulo": "Apple AirPods Pro de segunda generación",
+      "descripcion": "Accesorio práctico para complementar tu equipo y facilitar el uso de la tecnología en el día a día.",
+      "precio": 249.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 44,
+      "titulo": "Samsung Galaxy Buds2 Pro",
+      "descripcion": "Accesorio práctico para complementar tu equipo y facilitar el uso de la tecnología en el día a día.",
+      "precio": 189.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 45,
+      "titulo": "Bose QuietComfort Ultra",
+      "descripcion": "Accesorio práctico para complementar tu equipo y facilitar el uso de la tecnología en el día a día.",
+      "precio": 429,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 46,
+      "titulo": "Sony WF-1000XM5",
+      "descripcion": "Accesorio práctico para complementar tu equipo y facilitar el uso de la tecnología en el día a día.",
+      "precio": 299.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 47,
+      "titulo": "Garmin Forerunner 265",
+      "descripcion": "Accesorio práctico para complementar tu equipo y facilitar el uso de la tecnología en el día a día.",
+      "precio": 449.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 48,
+      "titulo": "Fitbit Charge 6",
+      "descripcion": "Accesorio práctico para complementar tu equipo y facilitar el uso de la tecnología en el día a día.",
+      "precio": 159.95,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 49,
+      "titulo": "Apple Pencil Pro",
+      "descripcion": "Accesorio práctico para complementar tu equipo y facilitar el uso de la tecnología en el día a día.",
+      "precio": 129,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 50,
+      "titulo": "Logitech MX Keys S",
+      "descripcion": "Accesorio práctico para complementar tu equipo y facilitar el uso de la tecnología en el día a día.",
+      "precio": 109.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 51,
+      "titulo": "Logitech G502 X",
+      "descripcion": "Accesorio práctico para complementar tu equipo y facilitar el uso de la tecnología en el día a día.",
+      "precio": 79.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 52,
+      "titulo": "Razer DeathAdder V3",
+      "descripcion": "Accesorio práctico para complementar tu equipo y facilitar el uso de la tecnología en el día a día.",
+      "precio": 69.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 53,
+      "titulo": "HyperX Cloud III",
+      "descripcion": "Accesorio práctico para complementar tu equipo y facilitar el uso de la tecnología en el día a día.",
+      "precio": 99.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 54,
+      "titulo": "Elgato Stream Deck MK.2",
+      "descripcion": "Accesorio práctico para complementar tu equipo y facilitar el uso de la tecnología en el día a día.",
+      "precio": 149.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 55,
+      "titulo": "Anker 737 Power Bank",
+      "descripcion": "Accesorio práctico para complementar tu equipo y facilitar el uso de la tecnología en el día a día.",
+      "precio": 129.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 56,
+      "titulo": "Baseus cargador GaN de 100 W",
+      "descripcion": "Accesorio práctico para complementar tu equipo y facilitar el uso de la tecnología en el día a día.",
+      "precio": 59.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 57,
+      "titulo": "Hub USB-C UGREEN 7 en 1",
+      "descripcion": "Accesorio práctico para complementar tu equipo y facilitar el uso de la tecnología en el día a día.",
+      "precio": 39.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Accesorios"
+    },
+    {
+      "id": 58,
+      "titulo": "MacBook Pro de 14 pulgadas con M3",
+      "descripcion": "Equipo confiable para productividad y entretenimiento, pensado para responder a las tareas cotidianas.",
+      "precio": 1599,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 59,
+      "titulo": "MacBook Air de 15 pulgadas con M3",
+      "descripcion": "Equipo confiable para productividad y entretenimiento, pensado para responder a las tareas cotidianas.",
+      "precio": 1499,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 60,
+      "titulo": "Dell XPS 15",
+      "descripcion": "Equipo confiable para productividad y entretenimiento, pensado para responder a las tareas cotidianas.",
+      "precio": 1699.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 61,
+      "titulo": "Dell Inspiron 14",
+      "descripcion": "Equipo confiable para productividad y entretenimiento, pensado para responder a las tareas cotidianas.",
+      "precio": 799.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 62,
+      "titulo": "HP Spectre x360 14",
+      "descripcion": "Equipo confiable para productividad y entretenimiento, pensado para responder a las tareas cotidianas.",
+      "precio": 1399.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 63,
+      "titulo": "HP Pavilion 15",
+      "descripcion": "Equipo confiable para productividad y entretenimiento, pensado para responder a las tareas cotidianas.",
+      "precio": 699.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 64,
+      "titulo": "Lenovo ThinkPad X1 Carbon Gen 12",
+      "descripcion": "Equipo confiable para productividad y entretenimiento, pensado para responder a las tareas cotidianas.",
+      "precio": 1849,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 65,
+      "titulo": "Lenovo Yoga 7 14 pulgadas",
+      "descripcion": "Equipo confiable para productividad y entretenimiento, pensado para responder a las tareas cotidianas.",
+      "precio": 899.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 66,
+      "titulo": "ASUS Zenbook 14 OLED",
+      "descripcion": "Equipo confiable para productividad y entretenimiento, pensado para responder a las tareas cotidianas.",
+      "precio": 999.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 67,
+      "titulo": "ASUS TUF Gaming A15",
+      "descripcion": "Equipo confiable para productividad y entretenimiento, pensado para responder a las tareas cotidianas.",
+      "precio": 1199.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 68,
+      "titulo": "Acer Swift Go 14",
+      "descripcion": "Equipo confiable para productividad y entretenimiento, pensado para responder a las tareas cotidianas.",
+      "precio": 849.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 69,
+      "titulo": "Acer Nitro 5",
+      "descripcion": "Equipo confiable para productividad y entretenimiento, pensado para responder a las tareas cotidianas.",
+      "precio": 1099.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 70,
+      "titulo": "MSI Katana 15",
+      "descripcion": "Equipo confiable para productividad y entretenimiento, pensado para responder a las tareas cotidianas.",
+      "precio": 1299.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 71,
+      "titulo": "Razer Blade 15",
+      "descripcion": "Equipo confiable para productividad y entretenimiento, pensado para responder a las tareas cotidianas.",
+      "precio": 2499.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 72,
+      "titulo": "PC de escritorio AMD Ryzen 7",
+      "descripcion": "Equipo confiable para productividad y entretenimiento, pensado para responder a las tareas cotidianas.",
+      "precio": 1299.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 73,
+      "titulo": "ASUS ProArt Display PA278QV",
+      "descripcion": "Equipo confiable para productividad y entretenimiento, pensado para responder a las tareas cotidianas.",
+      "precio": 299.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 74,
+      "titulo": "Samsung ViewFinity S6 de 32 pulgadas",
+      "descripcion": "Equipo confiable para productividad y entretenimiento, pensado para responder a las tareas cotidianas.",
+      "precio": 399.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 4,
+      "categoria": "Computadoras"
+    },
+    {
+      "id": 75,
+      "titulo": "Acer Predator Helios Neo 16",
+      "descripcion": "Equipo confiable para productividad y entretenimiento, pensado para responder a las tareas cotidianas.",
+      "precio": 1399.99,
+      "imagen": "",
+      "fav": false,
+      "rating": 5,
+      "categoria": "Computadoras"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "nombre": "Accesorios"
+    },
+    {
+      "id": 2,
+      "nombre": "Computadoras"
+    },
+    {
+      "id": 3,
+      "nombre": "Electrónica"
+    }
+  ]
+}

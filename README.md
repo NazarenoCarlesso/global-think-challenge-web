@@ -46,6 +46,24 @@ bun dev
 
 Una vez que el servidor esté corriendo, abrí tu navegador en [http://localhost:3000](http://localhost:3000).
 
+### API local
+
+Para iniciar la API de productos, ejecutá en otra terminal:
+
+```bash
+cd backend
+npm install
+npm start
+```
+
+La colección de productos queda disponible en [http://localhost:3001/products](http://localhost:3001/products) y las categorías en [http://localhost:3001/categories](http://localhost:3001/categories). Para consultar páginas de 8 productos, usá `http://localhost:3001/products?_page=1&_per_page=8`; json-server devuelve `data`, `pages` e `items` junto con los enlaces de navegación. También se pueden combinar filtros, por ejemplo `http://localhost:3001/products?_page=1&_per_page=8&titulo:contains=Canon&categoria=Electr%C3%B3nica`.
+
+El backend muestra al iniciar los enlaces directos a cada endpoint. También registra cada petición con colores, método, ruta, código HTTP y duración, con una separación visual entre el mensaje de inicio y los logs.
+
+El frontend toma la URL de la API desde `frontend/.env.local`, configurada mediante `NEXT_PUBLIC_API_URL`. Al clonar el proyecto, copiá `frontend/.env.example` a `frontend/.env.local` y reiniciá Next.js después de cambiar la variable.
+
+Los favoritos y el carrito se guardan en el `localStorage` del navegador para conservarse al recargar la página.
+
 ### Deploy en Vercel
 
 ![Vercel Deploy](https://deploy-badge.vercel.app/vercel/reactions-demo)
