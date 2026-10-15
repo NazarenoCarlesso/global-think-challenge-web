@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { motion } from "motion/react";
 import { CartItem as CartItemProps } from "@/interfaces";
 import { useProductsContext } from "@/hooks/useProductsContext";
 
@@ -21,23 +22,40 @@ export const CartItem = (item: CartItemProps) => {
             <p className="cart-title">{item.titulo}</p>
             <p className="cart-price">${item.precio}</p>
           </div>
-          <button
+          <motion.button
             className="cart-item__remove"
             type="button"
             aria-label={`Quitar ${item.titulo} del carrito`}
             onClick={() => removeFromCart(product.id)}
+            whileHover={{ scale: 1.08, rotate: -6 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ duration: 0.14 }}
           >
             🗑️
-          </button>
+          </motion.button>
         </div>
         <footer className="cart-item__quantity">
-          <button type="button" aria-label={`Quitar una unidad de ${item.titulo}`} onClick={() => decreaseFromCart(product.id)}>
+          <motion.button
+            type="button"
+            aria-label={`Quitar una unidad de ${item.titulo}`}
+            onClick={() => decreaseFromCart(product.id)}
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.88 }}
+            transition={{ duration: 0.12 }}
+          >
             −
-          </button>
+          </motion.button>
           <span aria-label={`Cantidad: ${quantity}`}>{quantity}</span>
-          <button type="button" aria-label={`Agregar una unidad de ${item.titulo}`} onClick={() => addToCart(product)}>
+          <motion.button
+            type="button"
+            aria-label={`Agregar una unidad de ${item.titulo}`}
+            onClick={() => addToCart(product)}
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.88 }}
+            transition={{ duration: 0.12 }}
+          >
             +
-          </button>
+          </motion.button>
         </footer>
       </div>
     </li>

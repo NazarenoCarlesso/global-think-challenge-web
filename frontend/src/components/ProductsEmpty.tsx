@@ -1,6 +1,15 @@
+"use client"
+import { motion } from "motion/react";
+
 export const ProductsEmpty = () => {
   return (
-    <section className="products empty-state" role="status">
+    <motion.section
+      className="products empty-state"
+      role="status"
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.22, ease: "easeOut" }}
+    >
       <div className="empty-state__icon" aria-hidden="true">
         <svg viewBox="0 0 48 48" fill="none">
           <circle cx="21" cy="21" r="12" />
@@ -15,6 +24,6 @@ export const ProductsEmpty = () => {
       <p className="empty-state__hint">
         Probá con otro término o seleccioná una categoría diferente.
       </p>
-    </section>
+    </motion.section>
   );
 };

@@ -71,6 +71,7 @@ body {
   color: var(--text);
   font-family: "Space Grotesk", sans-serif;
   min-height: 100vh;
+  transition: background-color 220ms ease, color 220ms ease;
 }
 .page { max-width: 1280px; margin: 0 auto; padding: 28px 56px 56px; }
 .store-main { min-height: 100vh; }
@@ -78,7 +79,7 @@ body {
 /* ---------- Header ---------- */
 .header { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
 .header__actions { display: flex; gap: 12px; align-items: center; }
-.logo { font: 800 22px "Bricolage Grotesque"; }
+.logo { font: 800 22px "Bricolage Grotesque"; transition: color 220ms ease; }
 .logo span { color: var(--accent); }
 
 .cart-btn {
@@ -102,6 +103,7 @@ body {
 .theme-toggle button {
   width: 44px; height: 40px; border: 0; border-radius: 99px;
   background: none; color: var(--muted); cursor: pointer;
+  transition: background-color 220ms ease, color 220ms ease;
 }
 .theme-toggle button[aria-pressed="true"] { background: var(--accent-grad); color: #fff; }
 
@@ -119,7 +121,22 @@ body {
 
 /* ---------- Filtros y buscador ---------- */
 .filters { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-bottom: 32px; }
-.category-filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.category-filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; isolation: isolate; }
+.category-filters .chip {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: color 180ms ease, border-color 180ms ease;
+}
+.category-filters .chip--active { background: transparent; }
+.category-chip__indicator {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--accent-grad);
+}
+.category-chip__label { position: relative; z-index: 1; }
 .search-controls { display: flex; align-items: center; gap: 10px; margin-left: auto; }
 .search-controls > p { color: var(--muted); font-size: 14px; white-space: nowrap; }
 .chip {
@@ -134,10 +151,14 @@ body {
   height: 48px; padding: 0 16px; border-radius: 14px;
   background: var(--input-bg); border: 1px solid var(--border); color: var(--muted);
 }
+.search:focus-within {
+  outline: 2px solid var(--accent); outline-offset: 3px;
+}
 .search input {
   width: 160px; border: 0; outline: none; background: none;
   color: var(--text); font: 16px "Space Grotesk";
 }
+.search input:focus-visible { outline: none; }
 
 /* ---------- Grilla y tarjetas ---------- */
 .products { width: 100%; margin-bottom: 20px; }
@@ -184,10 +205,16 @@ body {
 .card__row { margin-top: auto; }
 
 .fav-btn {
+  display: grid;
+  place-items: center;
   width: 44px; height: 44px; border-radius: 12px; cursor: pointer;
-  border: 1px solid var(--border); background: var(--input-bg); color: var(--accent);
+  border: 1px solid var(--border); background: var(--input-bg); color: var(--muted);
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
 }
-.fav-btn:hover { background: var(--seg-bg); border-color: var(--accent); }
+.fav-btn svg { width: 22px; height: 22px; }
+.fav-btn[aria-pressed="true"] { color: var(--accent); }
+.fav-btn:hover { background: var(--seg-bg); border-color: var(--accent); color: var(--accent); }
+.fav-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .cart-btn:hover { border-color: transparent; filter: brightness(1.06); }
 button:focus-visible, input:focus-visible {
   outline: 2px solid var(--accent); outline-offset: 3px;

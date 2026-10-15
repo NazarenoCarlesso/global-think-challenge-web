@@ -14,15 +14,10 @@ const renderCart = (overrides: Partial<ProductContextType> = {}) => {
 };
 
 describe("Cart", () => {
-  it("shows the empty state and stays hidden when closed", () => {
+  it("does not render the cart while it is closed", () => {
     renderCart();
 
-    const cart = screen.getByLabelText("Carrito de compras");
-    expect(cart).toHaveAttribute("aria-hidden", "true");
-    expect(cart).toHaveStyle({ display: "none" });
-    expect(screen.getByText("Tu carrito está vacío")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Carrito (0)", hidden: true })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Vaciar carrito" })).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Carrito de compras")).not.toBeInTheDocument();
   });
 
   it("renders cart items and invokes clear and close actions", () => {
@@ -41,8 +36,7 @@ describe("Cart", () => {
     const toggleCart = jest.fn();
     renderCart({ cart: [product], isCartOpen: true, clearCart, toggleCart });
 
-    expect(screen.getByLabelText("Carrito de compras")).toHaveAttribute("aria-hidden", "false");
-    expect(screen.getByLabelText("Carrito de compras")).toHaveStyle({ display: "flex" });
+    expect(screen.getByLabelText("Carrito de compras")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Carrito (1)" })).toBeInTheDocument();
     expect(screen.getByText("Auriculares")).toBeInTheDocument();
 

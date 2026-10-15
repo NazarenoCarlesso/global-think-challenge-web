@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./design.css";
 import { ProductsProvider } from "@/context/ProductsContext";
+import { MotionConfig } from "motion/react";
 
 export const metadata: Metadata = {
   title: "Global Think Store",
@@ -16,9 +17,11 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body>
-        <ProductsProvider>
-          {children}
-        </ProductsProvider>
+        <MotionConfig reducedMotion="user">
+          <ProductsProvider>
+            {children}
+          </ProductsProvider>
+        </MotionConfig>
       </body>
     </html>
   );

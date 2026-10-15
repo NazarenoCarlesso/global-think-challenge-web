@@ -218,13 +218,13 @@ describe('ProductsList', () => {
     expect(screen.getByText('Producto 1')).toBeInTheDocument();
     expect(screen.getByText('Producto 2')).toBeInTheDocument();
 
-    // Verifica que los botones de favoritos tengan la clase correcta
-    const favButton1 = screen.getAllByRole('button', { name: '🤍' })[0];
-    const favButton2 = screen.getAllByRole('button', { name: '🧡' })[0];
+    const favoriteButton = screen.getByRole("button", { name: "Quitar Producto 1 de favoritos" });
+    const notFavoriteButton = screen.getByRole("button", { name: "Agregar Producto 2 a favoritos" });
 
-    // Asume que '🤍' es el emoji cuando es favorito y '🧡' cuando no
-    expect(favButton1).toHaveTextContent('🤍');
-    expect(favButton2).toHaveTextContent('🧡');
+    expect(favoriteButton).toHaveAttribute("aria-pressed", "true");
+    expect(favoriteButton.querySelector("svg")).toHaveAttribute("fill", "currentColor");
+    expect(notFavoriteButton).toHaveAttribute("aria-pressed", "false");
+    expect(notFavoriteButton.querySelector("svg")).toHaveAttribute("fill", "none");
   });
 
   // Test 4: Simula el clic en el título de un producto
@@ -349,7 +349,7 @@ describe('ProductsList', () => {
       </ProductsContext.Provider>
     );
 
-    const favButton = screen.getAllByRole('button', { name: '🧡' })[0];
+    const favButton = screen.getByRole("button", { name: "Agregar Producto 1 a favoritos" });
     fireEvent.click(favButton);
 
     expect(mockSetFavorite).toHaveBeenCalledWith(1);

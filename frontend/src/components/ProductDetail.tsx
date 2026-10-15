@@ -1,6 +1,7 @@
 "use client"
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { motion } from "motion/react";
 import "./ProductDetail.css";
 import { useRouter } from "next/navigation";
 import { useProductsContext } from "@/hooks/useProductsContext";
@@ -62,8 +63,22 @@ export const ProductDetail = ({ id }: ProductDetailProps) => {
   }
 
   return (
-    <div className="product-detail">
-      <section className="product-detail__media">
+    <motion.div
+      className="product-detail"
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: {},
+        visible: { transition: { staggerChildren: 0.08 } },
+      }}
+    >
+      <motion.section
+        className="product-detail__media"
+        variants={{
+          hidden: { opacity: 0, y: 12 },
+          visible: { opacity: 1, y: 0, transition: { duration: 0.32, ease: "easeOut" } },
+        }}
+      >
         <div className="product-detail__image">
           {product.imagen ? (
             <Image src={product.imagen} alt={product.titulo} width={600} height={600} />
@@ -75,8 +90,14 @@ export const ProductDetail = ({ id }: ProductDetailProps) => {
           <h2>Descripción</h2>
           <p>{product.descripcion}</p>
         </div>
-      </section>
-      <aside className="product-summary">
+      </motion.section>
+      <motion.aside
+        className="product-summary"
+        variants={{
+          hidden: { opacity: 0, y: 12 },
+          visible: { opacity: 1, y: 0, transition: { duration: 0.32, ease: "easeOut" } },
+        }}
+      >
         <div className="product-summary__heading">
           <span className="product-summary__eyebrow">{product.categoria}</span>
           <h1>{product.titulo}</h1>
@@ -117,14 +138,14 @@ export const ProductDetail = ({ id }: ProductDetailProps) => {
           </section>
         </div>
         <footer className="product-summary__actions">
-          <button className='purchase' onClick={() => addToCart(product)}>
+          <motion.button className='purchase' onClick={() => addToCart(product)} whileTap={{ scale: 0.97 }}>
             Comprar
-          </button>
-          <button className='return' onClick={() => router.push('/')}>
+          </motion.button>
+          <motion.button className='return' onClick={() => router.push('/')} whileTap={{ scale: 0.97 }}>
             Volver
-          </button>
+          </motion.button>
         </footer>
-      </aside>
-    </div>
+      </motion.aside>
+    </motion.div>
   )
 }

@@ -5,12 +5,14 @@ import { getCategories, getProducts } from "@/services/products";
 import { createContext, ReactNode, useCallback, useEffect, useReducer, useState } from "react";
 import { readPersistedStoreState, writePersistedStoreState } from "./storePersistence";
 import { productsReducer } from "./productsReducer";
+import { usePathname } from "next/navigation";
 
 export const ProductsContext = createContext<ProductContextType | null>(null);
 
 const PRODUCTS_PER_PAGE = 8;
 
 export const ProductsProvider = ({ children }: { children: ReactNode }) => {
+  const pathname = usePathname();
   const [state, dispatch] = useReducer(productsReducer, PRODUCTS_INITIAL_STATE);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -21,6 +23,7 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
   const [categoryFilter, setCategoryFilterState] = useState<string | undefined>();
   const [isCartOpen, setCartOpen] = useState<boolean>(false);
   const [persistenceReady, setPersistenceReady] = useState(false);
+  const [filtersReady, setFiltersReady] = useState(false);
   const [productsLoaded, setProductsLoaded] = useState(false);
   const [hasStoredFavorites, setHasStoredFavorites] = useState(false);
 
@@ -42,6 +45,36 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
       setPersistenceReady(true);
     }
   }, []);
+
+  useEffect(() => {
+    const restoreFiltersFromUrl = () => {
+      const params = new URLSearchParams(window.location.search);
+      const requestedPage = Number(params.get("page"));
+
+      setFilterState(params.get("search") || undefined);
+      setCategoryFilterState(params.get("category") || undefined);
+      setCurrentPage(Number.isInteger(requestedPage) && requestedPage > 0 ? requestedPage : 1);
+      setFiltersReady(true);
+    };
+
+    restoreFiltersFromUrl();
+    window.addEventListener("popstate", restoreFiltersFromUrl);
+    return () => window.removeEventListener("popstate", restoreFiltersFromUrl);
+  }, []);
+
+  useEffect(() => {
+    if (!filtersReady) return;
+
+    const url = new URL(window.location.href);
+    if (filter?.trim()) url.searchParams.set("search", filter.trim());
+    else url.searchParams.delete("search");
+    if (categoryFilter) url.searchParams.set("category", categoryFilter);
+    else url.searchParams.delete("category");
+    if (currentPage > 1) url.searchParams.set("page", String(currentPage));
+    else url.searchParams.delete("page");
+
+    window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+  }, [filtersReady, filter, categoryFilter, currentPage, pathname]);
 
   useEffect(() => {
     if (!persistenceReady || !productsLoaded) return;
@@ -75,7 +108,7 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    if (!persistenceReady) return;
+    if (!persistenceReady || !filtersReady) return;
 
     let active = true;
     dispatch({ type: "SET_LOADING", payload: true });
@@ -102,7 +135,7 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
     return () => {
       active = false;
     };
-  }, [currentPage, filter, categoryFilter, persistenceReady, hasStoredFavorites]);
+  }, [currentPage, filter, categoryFilter, persistenceReady, filtersReady, hasStoredFavorites]);
 
   /*
       Acciones de dispatch

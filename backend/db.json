@@ -6,7 +6,7 @@
       "descripcion": "Cámara mirrorless APS-C de 32,5 MP con estabilización integrada y ráfagas de alta velocidad.",
       "precio": 1499.99,
       "imagen": "",
-      "fav": true,
+      "fav": false,
       "rating": 4,
       "categoria": "Electrónica"
     },
@@ -46,7 +46,7 @@
       "descripcion": "Reloj inteligente de 44 mm con seguimiento del sueño, actividad física y salud cardíaca.",
       "precio": 249.99,
       "imagen": "",
-      "fav": true,
+      "fav": false,
       "rating": 4,
       "categoria": "Accesorios"
     },
@@ -86,7 +86,7 @@
       "descripcion": "Monitor QHD curvo de 165 Hz con panel VA y compatibilidad con AMD FreeSync Premium.",
       "precio": 329.99,
       "imagen": "",
-      "fav": true,
+      "fav": false,
       "rating": 5,
       "categoria": "Computadoras"
     },

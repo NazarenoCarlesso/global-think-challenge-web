@@ -12,6 +12,7 @@ jest.mock("@/services/products", () => ({
 
 jest.mock("next/navigation", () => ({
   useRouter: () => ({ push: jest.fn() }),
+  usePathname: () => "/",
 }));
 
 jest.mock("next/image", () => ({
@@ -87,6 +88,7 @@ const renderStore = async () => {
 
 describe("Products pagination and filters", () => {
   beforeEach(() => {
+    window.history.replaceState({}, "", "/");
     mockGetCategories.mockResolvedValue(categories);
     mockGetProducts.mockImplementation(mockGetProductsForTest);
   });
@@ -109,6 +111,19 @@ describe("Products pagination and filters", () => {
     expect(screen.getByText("Página 2 de 4")).toBeInTheDocument();
     expect(screen.getByText("25 productos")).toBeInTheDocument();
     expect(mockGetProducts).toHaveBeenLastCalledWith(2, 8, undefined, undefined);
+    expect(new URLSearchParams(window.location.search).get("page")).toBe("2");
+  });
+
+  it("loads the requested page when it is present in the URL", async () => {
+    window.history.replaceState({}, "", "/?page=2&campaign=summer");
+
+    await renderStore();
+
+    expect(await screen.findByRole("button", { name: "Producto 9" })).toBeInTheDocument();
+    expect(screen.getByText("Página 2 de 4")).toBeInTheDocument();
+    expect(mockGetProducts).toHaveBeenLastCalledWith(2, 8, undefined, undefined);
+    expect(new URLSearchParams(window.location.search).get("campaign")).toBe("summer");
+    expect(new URLSearchParams(window.location.search).get("page")).toBe("2");
   });
 
   it("returns to the previous page", async () => {
@@ -121,6 +136,7 @@ describe("Products pagination and filters", () => {
     expect(await screen.findByRole("button", { name: "Apple iPhone" })).toBeInTheDocument();
     expect(screen.getByText("Página 1 de 4")).toBeInTheDocument();
     expect(mockGetProducts).toHaveBeenLastCalledWith(1, 8, undefined, undefined);
+    expect(new URLSearchParams(window.location.search).has("page")).toBe(false);
   });
 
   it("filters by category without removing the other category buttons", async () => {
@@ -132,10 +148,34 @@ describe("Products pagination and filters", () => {
     expect(screen.getByText("9 productos")).toBeInTheDocument();
     expect(screen.getByText("Página 1 de 2")).toBeInTheDocument();
     expect(mockGetProducts).toHaveBeenLastCalledWith(1, 8, undefined, "Accesorios");
+    expect(new URLSearchParams(window.location.search).get("category")).toBe("Accesorios");
 
     for (const category of categories) {
       expect(screen.getByRole("button", { name: category })).toBeInTheDocument();
     }
+  });
+
+  it("restores search and category from the URL after remounting", async () => {
+    window.history.replaceState({}, "", "/?campaign=summer&search=Sony&category=Electr%C3%B3nica");
+    const { unmount } = render(
+      <ProductsProvider>
+        <SearchBar />
+        <ProductsList />
+      </ProductsProvider>
+    );
+
+    expect(await screen.findByRole("button", { name: "Sony Camera" })).toBeInTheDocument();
+    expect(screen.getByRole("searchbox", { name: "Buscar productos" })).toHaveValue("Sony");
+    expect(screen.getByRole("button", { name: "Electrónica" })).toHaveAttribute("aria-pressed", "true");
+    expect(mockGetProducts).toHaveBeenLastCalledWith(1, 8, "Sony", "Electrónica");
+    expect(new URLSearchParams(window.location.search).get("campaign")).toBe("summer");
+
+    unmount();
+    await renderStore();
+
+    expect(screen.getByRole("searchbox", { name: "Buscar productos" })).toHaveValue("Sony");
+    expect(screen.getByRole("button", { name: "Electrónica" })).toHaveAttribute("aria-pressed", "true");
+    expect(mockGetProducts).toHaveBeenLastCalledWith(1, 8, "Sony", "Electrónica");
   });
 
   it("searches product titles and displays the matching total", async () => {
@@ -150,6 +190,7 @@ describe("Products pagination and filters", () => {
     });
     expect(await screen.findByRole("button", { name: "Sony Camera" })).toBeInTheDocument();
     expect(screen.getByText("1 productos")).toBeInTheDocument();
+    expect(new URLSearchParams(window.location.search).get("search")).toBe("Sony");
     expect(screen.queryByRole("button", { name: "Producto 9" })).not.toBeInTheDocument();
   });
 

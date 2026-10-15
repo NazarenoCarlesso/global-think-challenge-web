@@ -3,7 +3,10 @@ import { ProductsProvider } from "@/context/ProductsContext";
 import { useProductsContext } from "@/hooks/useProductsContext";
 import { Product } from "@/interfaces";
 import { getCategories, getProducts } from "@/services/products";
-import { readPersistedStoreState } from "@/context/storePersistence";
+import {
+  readPersistedStoreState,
+  writePersistedStoreState,
+} from "@/context/storePersistence";
 
 jest.mock("@/services/products", () => ({
   getCategories: jest.fn(),
@@ -216,6 +219,101 @@ describe("favorite and cart persistence", () => {
     });
     expect(errorSpy).toHaveBeenCalled();
     errorSpy.mockRestore();
+  });
+
+  it("returns an empty state when there is no saved data", () => {
+    expect(readPersistedStoreState(window.localStorage)).toEqual({
+      favorites: [],
+      cart: [],
+      hasStoredFavorites: false,
+      isCartOpen: false,
+    });
+  });
+
+  it("ignores a parsed value that is not an object and reports it", () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    window.localStorage.setItem("global-think-store", JSON.stringify(null));
+
+    expect(readPersistedStoreState(window.localStorage)).toEqual({
+      favorites: [],
+      cart: [],
+      hasStoredFavorites: false,
+      isCartOpen: false,
+    });
+    expect(errorSpy).toHaveBeenCalledWith(
+      "La persistencia de favoritos y carrito tiene un formato inválido."
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("rejects invalid favorites and cart data without discarding valid values", () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    window.localStorage.setItem("global-think-store", JSON.stringify({
+      favorites: [1, 0, "2"],
+      cart: [{ ...product, quantity: 0 }],
+      isCartOpen: true,
+    }));
+
+    expect(readPersistedStoreState(window.localStorage)).toEqual({
+      favorites: [],
+      cart: [],
+      hasStoredFavorites: false,
+      isCartOpen: true,
+    });
+    expect(errorSpy).toHaveBeenCalledWith(
+      "La persistencia de favoritos, carrito o estado de apertura tiene datos inválidos; se ignorará el dato afectado."
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("rejects cart data that is not an array or contains malformed items", () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const invalidProducts = [
+      { ...product, id: "1" },
+      { ...product, titulo: 1 },
+      { ...product, descripcion: 1 },
+      { ...product, precio: "100" },
+      { ...product, imagen: null },
+      { ...product, fav: "true" },
+      { ...product, rating: "5" },
+      { ...product, categoria: null },
+    ];
+    const invalidCartItems = [
+      null,
+      7,
+      ...invalidProducts,
+      { ...product, quantity: "1" },
+      { ...product, quantity: 1.5 },
+    ];
+
+    for (const cart of [null, ...invalidCartItems.map((item) => [item])]) {
+      window.localStorage.setItem("global-think-store", JSON.stringify({
+        favorites: [1],
+        cart,
+      }));
+
+      expect(readPersistedStoreState(window.localStorage)).toMatchObject({
+        favorites: [1],
+        cart: [],
+        hasStoredFavorites: true,
+      });
+    }
+
+    expect(errorSpy).toHaveBeenCalledTimes(invalidCartItems.length + 1);
+    errorSpy.mockRestore();
+  });
+
+  it("writes favorites, cart, and cart-open state as JSON", () => {
+    const setItem = jest.fn();
+    const state = {
+      favorites: [1, 3],
+      cart: [{ ...product, quantity: 2 }],
+      isCartOpen: true,
+    };
+
+    writePersistedStoreState({ setItem }, state);
+
+    expect(setItem).toHaveBeenCalledWith("global-think-store", JSON.stringify(state));
   });
 
   it("defaults an invalid cart-open value and reports it", () => {
