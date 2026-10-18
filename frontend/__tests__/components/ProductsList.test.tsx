@@ -83,7 +83,8 @@ describe('ProductsList', () => {
       currentPage: 1,
       totalPages: 1,
       totalProducts: 0,
-      goToPage: jest.fn(),
+      nextPage: jest.fn(),
+      prevPage: jest.fn(),
       error: null,
       resultsCount: 0,
       addToCart: jest.fn(),
@@ -124,7 +125,8 @@ describe('ProductsList', () => {
       currentPage: 1,
       totalPages: 1,
       totalProducts: 0,
-      goToPage: jest.fn(),
+      nextPage: jest.fn(),
+      prevPage: jest.fn(),
       error: null,
       resultsCount: 0,
       addToCart: jest.fn(),
@@ -164,7 +166,8 @@ describe('ProductsList', () => {
       currentPage: 1,
       totalPages: 1,
       totalProducts: 0,
-      goToPage: jest.fn(),
+      nextPage: jest.fn(),
+      prevPage: jest.fn(),
       error: "Fallo de red",
       resultsCount: 0,
       addToCart: jest.fn(),
@@ -205,7 +208,8 @@ describe('ProductsList', () => {
       currentPage: 1,
       totalPages: 1,
       totalProducts: mockProducts.length,
-      goToPage: jest.fn(),
+      nextPage: jest.fn(),
+      prevPage: jest.fn(),
       error: null,
       resultsCount: 0,
       addToCart: jest.fn(),
@@ -255,7 +259,8 @@ describe('ProductsList', () => {
       currentPage: 1,
       totalPages: 1,
       totalProducts: mockProducts.length,
-      goToPage: jest.fn(),
+      nextPage: jest.fn(),
+      prevPage: jest.fn(),
       error: null,
       resultsCount: 0,
       addToCart: jest.fn(),
@@ -279,7 +284,7 @@ describe('ProductsList', () => {
   });
 
   it("should request the previous page when the previous button is clicked", () => {
-    const goToPage = jest.fn();
+    const prevPage = jest.fn();
     const mockContext: ProductContextType = {
       products: [],
       cart: [],
@@ -297,7 +302,8 @@ describe('ProductsList', () => {
       currentPage: 2,
       totalPages: 3,
       totalProducts: 20,
-      goToPage,
+      nextPage: jest.fn(),
+      prevPage,
       error: null,
       resultsCount: 20,
       addToCart: jest.fn(),
@@ -316,7 +322,7 @@ describe('ProductsList', () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Anterior" }));
 
-    expect(goToPage).toHaveBeenCalledWith(1);
+    expect(prevPage).toHaveBeenCalled();
   });
 
   // Test 5: Simula el clic en el botón de favoritos
@@ -340,7 +346,8 @@ describe('ProductsList', () => {
       currentPage: 1,
       totalPages: 1,
       totalProducts: mockProducts.length,
-      goToPage: jest.fn(),
+      nextPage: jest.fn(),
+      prevPage: jest.fn(),
       error: null,
       resultsCount: 0,
       addToCart: jest.fn(),

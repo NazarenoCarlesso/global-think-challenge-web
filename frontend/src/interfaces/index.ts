@@ -43,7 +43,8 @@ export interface ProductContextType extends ProductsState {
   currentPage: number
   totalPages: number
   totalProducts: number
-  goToPage: (page: number) => void
+  nextPage: () => void
+  prevPage: () => void
   error: string | null
   filteredResults: Product[]
   resultsCount: number
@@ -54,3 +55,35 @@ export interface ProductContextType extends ProductsState {
   isCartOpen: boolean
   removeFromCart: (id: number) => void
 };
+
+export interface ProductsActions {
+  setLoading: (loading: boolean) => void;
+  setProducts: (products: Product[], initializeFavorites?: boolean) => void;
+  restorePersistedState: (payload: { favorites: number[]; cart: CartItem[] }) => void;
+  setFavorite: (id: number) => void;
+  addToCart: (product: Product) => void;
+  increaseFromCart: (id: number) => void;
+  decreaseFromCart: (id: number) => void;
+  removeFromCart: (id: number) => void;
+  clearCart: () => void;
+}
+
+export interface UseStorePersistenceProps {
+  favorites: number[];
+  cart: CartItem[];
+  actions: Pick<ProductsActions, "restorePersistedState">;
+  productsLoaded: boolean;
+}
+
+export interface UseProductsCatalogProps {
+  currentPage: number;
+  filter: string | undefined;
+  categoryFilter: string | undefined;
+  persistenceReady: boolean;
+  filtersReady: boolean;
+  hasStoredFavorites: boolean;
+  actions: Pick<ProductsActions, "setLoading" | "setProducts">;
+  productsPerPage?: number;
+  onProductsLoaded?: () => void;
+}
+
