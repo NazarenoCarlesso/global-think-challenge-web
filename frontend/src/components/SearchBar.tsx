@@ -9,8 +9,8 @@ export const SearchBar = () => {
   const {
     categories,
     filter,
-    setFilter,
-    setCategoryFilter,
+    changeSearchTerm,
+    selectCategory,
     categoryFilter,
     resultsCount,
     error,
@@ -29,11 +29,11 @@ export const SearchBar = () => {
     if (searchValue === (filter ?? "")) return;
 
     const timeoutId = window.setTimeout(() => {
-      setFilter(searchValue || undefined);
+      changeSearchTerm(searchValue || undefined);
     }, SEARCH_DEBOUNCE_MS);
 
     return () => window.clearTimeout(timeoutId);
-  }, [filter, searchValue, setFilter]);
+  }, [filter, searchValue, changeSearchTerm]);
 
   return (
     <div className="filters">
@@ -53,7 +53,7 @@ export const SearchBar = () => {
             className={`chip${!categoryFilter ? " chip--active" : ""}`}
             type="button"
             aria-pressed={!categoryFilter}
-            onClick={() => setCategoryFilter(undefined)}
+            onClick={() => selectCategory(undefined)}
             style={{ zIndex: categories.length + 1 }}
             whileTap={{ scale: 0.96 }}
             variants={{
@@ -77,7 +77,7 @@ export const SearchBar = () => {
               className={`chip${categoryFilter === category ? " chip--active" : ""}`}
               type="button"
               aria-pressed={categoryFilter === category}
-              onClick={() => setCategoryFilter(category)}
+              onClick={() => selectCategory(category)}
               variants={{
                 hidden: { opacity: 0, x: -12, scale: 0.97 },
                 visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.24, ease: "easeOut" } },

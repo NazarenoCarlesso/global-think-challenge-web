@@ -6,6 +6,7 @@ import { createContext, ReactNode, useCallback, useEffect, useReducer, useState 
 import { readPersistedStoreState, writePersistedStoreState } from "./storePersistence";
 import { productsReducer } from "./productsReducer";
 import { usePathname } from "next/navigation";
+import { showToast } from "nextjs-toast-notify";
 
 export const ProductsContext = createContext<ProductContextType | null>(null);
 
@@ -140,22 +141,33 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
   /*
       Acciones de dispatch
   */
-  const setProducts = (products: Product[]) => dispatch({ type: 'SET_PRODUCTS', payload: products });
-
-  const setPage = (page: number) => setCurrentPage(Math.min(Math.max(page, 1), totalPages));
-  const setFilter: ProductContextType["setFilter"] = useCallback((value) => {
+  const goToPage = (page: number) => setCurrentPage(Math.min(Math.max(page, 1), totalPages));
+  const changeSearchTerm: ProductContextType["changeSearchTerm"] = useCallback((value) => {
     setCurrentPage(1);
     setFilterState(value);
   }, []);
-  const setCategoryFilter = (category: string | undefined) => {
+  const selectCategory = (category: string | undefined) => {
     setCurrentPage(1);
     setCategoryFilterState(category);
   };
+  const clearFilters = () => {
+    setCurrentPage(1);
+    setFilterState(undefined);
+    setCategoryFilterState(undefined);
+  };
 
-  const setFavorite = (id: number) => dispatch({ type: 'SET_FAVORITE', payload: id });
+  const toggleFavorite = (id: number) => {
+    const isFavorite = state.favorites.includes(id);
+    dispatch({ type: 'SET_FAVORITE', payload: id });
+
+    if (isFavorite) showToast.info("Producto quitado de favoritos", { duration: 2500, position: "top-right" });
+    else showToast.success("Producto agregado a favoritos", { duration: 2500, position: "top-right" });
+  };
 
   const addToCart = (product: Product) => {
     const index = state.cart.findIndex(item => item.id === product.id);
+
+    showToast.success("Producto agregado al carrito", { duration: 2500, position: "top-right" });
 
     if (index === -1) {
       return dispatch({ type: 'ADD_TO_CART', payload: product });
@@ -169,16 +181,30 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
 
     if (index === -1) { return null; }
 
-    if (state.cart[index].quantity === 1) {
+    const cartItem = state.cart[index];
+    if (cartItem.quantity === 1) {
+      showToast.success(`${cartItem.titulo} eliminado del carrito`, { duration: 2500, position: "top-right" });
       return dispatch({ type: 'REMOVE_FROM_CART', payload: id });
     }
 
+    showToast.info(`Se quitó una unidad de ${cartItem.titulo}`, { duration: 2500, position: "top-right" });
     return dispatch({ type: 'DECREASE_FROM_CART', payload: id });
   };
 
-  const removeFromCart = (id: number) => dispatch({ type: 'REMOVE_FROM_CART', payload: id });
+  const removeFromCart = (id: number) => {
+    const item = state.cart.find(cartItem => cartItem.id === id);
+    if (!item) return;
 
-  const clearCart = () => dispatch({ type: 'CLEAR_CART', payload: undefined });
+    showToast.success(`${item.titulo} eliminado del carrito`, { duration: 2500, position: "top-right" });
+    dispatch({ type: 'REMOVE_FROM_CART', payload: id });
+  };
+
+  const clearCart = () => {
+    if (state.cart.length === 0) return;
+
+    dispatch({ type: 'CLEAR_CART', payload: undefined });
+    showToast.success("Carrito vaciado", { duration: 2500, position: "top-right" });
+  };
   const filteredResults = state.products;
   const resultsCount = totalProducts;
   // Toggle para el carrito
@@ -188,18 +214,18 @@ export const ProductsProvider = ({ children }: { children: ReactNode }) => {
     <ProductsContext.Provider
       value={{
         ...state,
-        setProducts,
-        setFavorite,
+        toggleFavorite,
         filter,
         hasLoadedProducts: productsLoaded,
-        setFilter,
-        setCategoryFilter,
+        changeSearchTerm,
+        selectCategory,
+        clearFilters,
         categoryFilter,
         categories,
         currentPage,
         totalPages,
         totalProducts,
-        setPage,
+        goToPage,
         error,
         filteredResults,
         resultsCount,

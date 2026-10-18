@@ -6,9 +6,7 @@ jest.mock("@/hooks/useProductsContext", () => ({
   useProductsContext: jest.fn(() => ({
     toggleCart: jest.fn(),
     cart: [],
-    setFilter: jest.fn(),
-    setCategoryFilter: jest.fn(),
-    setPage: jest.fn(),
+    clearFilters: jest.fn(),
   })),
 }));
 
@@ -78,8 +76,33 @@ describe("Header theme preference", () => {
 
     fireEvent.click(screen.getByRole("link", { name: "Global Think Store" }));
 
-    expect(context?.setFilter).toHaveBeenCalledWith(undefined);
-    expect(context?.setCategoryFilter).toHaveBeenCalledWith(undefined);
-    expect(context?.setPage).toHaveBeenCalledWith(1);
+    expect(context?.clearFilters).toHaveBeenCalledTimes(1);
+  });
+
+  it("shows a compact header with cart access after scrolling down", () => {
+    render(<Header />);
+
+    expect(screen.queryByRole("group", { name: "Navegación compacta" })).not.toBeInTheDocument();
+
+    Object.defineProperty(window, "scrollY", { configurable: true, value: 200 });
+    fireEvent.scroll(window);
+
+    expect(screen.getByRole("group", { name: "Navegación compacta" })).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: "Abrir carrito" })).toHaveLength(2);
+    expect(screen.getAllByRole("button", { name: "Tema claro" })).toHaveLength(1);
+  });
+
+  it("hides the compact header when returning to the top", async () => {
+    render(<Header />);
+    Object.defineProperty(window, "scrollY", { configurable: true, value: 200 });
+    fireEvent.scroll(window);
+    expect(screen.getByRole("group", { name: "Navegación compacta" })).toBeInTheDocument();
+
+    Object.defineProperty(window, "scrollY", { configurable: true, value: 0 });
+    fireEvent.scroll(window);
+
+    await waitFor(() => {
+      expect(screen.queryByRole("group", { name: "Navegación compacta" })).not.toBeInTheDocument();
+    });
   });
 });

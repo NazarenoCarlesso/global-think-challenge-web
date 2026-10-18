@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
-
 export interface Product {
   id: number
   titulo: string
@@ -34,18 +32,18 @@ export type ProductsAction =
   | { type: 'CLEAR_CART'; payload: undefined };
 
 export interface ProductContextType extends ProductsState {
-  setProducts: (products: Product[]) => void
-  setFavorite: (id: number) => void
+  toggleFavorite: (id: number) => void
   filter: string | undefined
   hasLoadedProducts: boolean
-  setFilter: Dispatch<SetStateAction<string | undefined>>
-  setCategoryFilter: (category: string | undefined) => void
+  changeSearchTerm: (searchTerm: string | undefined) => void
+  selectCategory: (category: string | undefined) => void
+  clearFilters: () => void
   categoryFilter: string | undefined
   categories: string[]
   currentPage: number
   totalPages: number
   totalProducts: number
-  setPage: (page: number) => void
+  goToPage: (page: number) => void
   error: string | null
   filteredResults: Product[]
   resultsCount: number

@@ -14,6 +14,20 @@
   --accent: #C2410C;
   --accent-grad: linear-gradient(135deg, #EA580C, #C2410C);
 }
+:root:not([data-theme="dark"]) {
+  --toast-bg-color: #FFFFFF;
+  --toast-text-color: #14161C;
+  --toast-close-color: #5B6270;
+  --toast-success-color: #C2410C;
+  --toast-info-color: #C2410C;
+  --toast-border-radius: 16px;
+  --toast-padding: 12px 38px 12px 12px;
+  --toast-icon-size: 34px;
+  --toast-message-margin: 0 12px 0 8px;
+  --toast-box-shadow: 0 14px 32px -18px rgba(194, 65, 12, .45);
+  --toast-progress-height: 3px;
+  --toast-side-offset: 8px;
+}
 
 [data-theme="dark"] {            /* E · oscuro */
   --bg: #0B0D12;
@@ -28,6 +42,31 @@
   --accent: #FF8A3D;
   --accent-grad: linear-gradient(135deg, #FF8A3D, #C2410C);
 }
+:root[data-theme="dark"] {
+  --toast-bg-color: #1B1F29;
+  --toast-text-color: #F2F4F8;
+  --toast-close-color: #A0A8B8;
+  --toast-success-color: #FF8A3D;
+  --toast-info-color: #FF8A3D;
+  --toast-border-radius: 16px;
+  --toast-padding: 12px 38px 12px 12px;
+  --toast-icon-size: 34px;
+  --toast-message-margin: 0 12px 0 8px;
+  --toast-box-shadow: 0 14px 32px -18px rgba(0, 0, 0, .8);
+  --toast-progress-height: 3px;
+  --toast-side-offset: 8px;
+}
+
+.toast-container.toast-container[class*="top-"] { --toast-offset: 96px; }
+.toast-container.toast-container[class*="bottom-"] { --toast-offset: 20px; }
+.toast-container.toast-container[class*="-right"] { right: 8px; }
+.toast-nextjs.toast-nextjs {
+  border: 1px solid var(--border);
+  font-family: "Space Grotesk", sans-serif;
+}
+.toast-nextjs .message .text { font-size: 14px; }
+.toast-nextjs.success .check { background-color: var(--toast-success-color) !important; }
+.toast-nextjs.info .check { background-color: var(--toast-info-color) !important; }
 
 /* ---------- Scrollbars ---------- */
 * {
@@ -78,6 +117,12 @@ body {
 
 /* ---------- Header ---------- */
 .header { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+.header--compact {
+  position: fixed; z-index: 9; top: 0; left: 0; right: 0; margin-inline: auto;
+  width: min(100%, 1280px); padding: 12px 56px;
+  border-bottom: 1px solid var(--border); background: var(--bg);
+  box-shadow: var(--shadow);
+}
 .header__actions { display: flex; gap: 12px; align-items: center; }
 .logo { font: 800 22px "Bricolage Grotesque"; transition: color 220ms ease; }
 .logo span { color: var(--accent); }
@@ -265,6 +310,7 @@ button:focus-visible, input:focus-visible {
 .empty-state h2 { font: 700 28px "Bricolage Grotesque"; }
 .empty-state p { max-width: 440px; color: var(--muted); font-size: 15px; line-height: 1.5; }
 .empty-state .empty-state__hint { font-size: 14px; }
+.empty-state__clear { margin-top: 4px; }
 
 @keyframes card-shimmer {
   0%, 100% { opacity: .55; }
@@ -279,6 +325,7 @@ button:focus-visible, input:focus-visible {
 
 @media (max-width: 520px) {
   .page { padding: 20px 16px 32px; }
+  .header--compact { padding: 10px 16px; }
   .logo { font-size: 18px; }
   .header__actions { gap: 8px; }
   .theme-toggle button { width: 36px; height: 36px; }
