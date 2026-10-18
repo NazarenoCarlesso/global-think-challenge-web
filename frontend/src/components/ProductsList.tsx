@@ -13,17 +13,18 @@ export const ProductsList = () => {
     loading,
     hasLoadedProducts,
     favorites,
-    setFavorite,
+    toggleFavorite,
+    clearFilters,
     currentPage,
     totalPages,
-    setPage,
+    goToPage,
     error,
   } = useProductsContext();
   const router = useRouter();
   const hasPlayedInitialListAnimation = useRef(false);
   const shouldAnimateInitialList = hasLoadedProducts && !hasPlayedInitialListAnimation.current;
 
-  const handleFavButton = (id: number) => setFavorite(id)
+  const handleFavButton = (id: number) => toggleFavorite(id)
 
   useEffect(() => {
     if (hasLoadedProducts) hasPlayedInitialListAnimation.current = true;
@@ -42,7 +43,7 @@ export const ProductsList = () => {
   return (
     <div className="products" aria-busy={loading}>
       {!products || !products.length ? (
-        <ProductsEmpty />
+        <ProductsEmpty onClear={clearFilters} />
       ) : (
         <>
           <motion.ul
@@ -131,7 +132,7 @@ export const ProductsList = () => {
               <motion.button
                 className="chip pagination__button"
                 type="button"
-                onClick={() => setPage(currentPage - 1)}
+                onClick={() => goToPage(currentPage - 1)}
                 disabled={currentPage === 1}
                 whileTap={{ scale: 0.96 }}
               >
@@ -143,7 +144,7 @@ export const ProductsList = () => {
               <motion.button
                 className="chip pagination__button"
                 type="button"
-                onClick={() => setPage(currentPage + 1)}
+                onClick={() => goToPage(currentPage + 1)}
                 disabled={currentPage === totalPages}
                 whileTap={{ scale: 0.96 }}
               >

@@ -1,7 +1,11 @@
 "use client"
 import { motion } from "motion/react";
 
-export const ProductsEmpty = () => {
+interface ProductsEmptyProps {
+  onClear: () => void;
+}
+
+export const ProductsEmpty = ({ onClear }: ProductsEmptyProps) => {
   return (
     <motion.section
       className="products empty-state"
@@ -24,6 +28,9 @@ export const ProductsEmpty = () => {
       <p className="empty-state__hint">
         Probá con otro término o seleccioná una categoría diferente.
       </p>
+      <button className="chip empty-state__clear" type="button" onClick={onClear}>
+        Borrar búsqueda y filtros
+      </button>
     </motion.section>
   );
 };

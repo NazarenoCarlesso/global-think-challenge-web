@@ -166,9 +166,7 @@ describe("ProductDetail", () => {
 
   it("returns to the listing without clearing its filters", async () => {
     getProductByIdMock.mockResolvedValue(product);
-    const setFilter = jest.fn();
-    const setCategoryFilter = jest.fn();
-    const setPage = jest.fn();
+    const clearFilters = jest.fn();
     render(
       <ProductsContext.Provider
         value={{
@@ -176,9 +174,7 @@ describe("ProductDetail", () => {
           filter: "Sony",
           categoryFilter: "Electrónica",
           currentPage: 2,
-          setFilter,
-          setCategoryFilter,
-          setPage,
+          clearFilters,
         }}
       >
         <ProductDetail id="9" />
@@ -188,8 +184,6 @@ describe("ProductDetail", () => {
     fireEvent.click(await screen.findByRole("button", { name: "Volver" }));
 
     expect(mockPush).toHaveBeenCalledWith("/");
-    expect(setFilter).not.toHaveBeenCalled();
-    expect(setCategoryFilter).not.toHaveBeenCalled();
-    expect(setPage).not.toHaveBeenCalled();
+    expect(clearFilters).not.toHaveBeenCalled();
   });
 });

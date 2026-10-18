@@ -7,6 +7,14 @@ import {
   readPersistedStoreState,
   writePersistedStoreState,
 } from "@/context/storePersistence";
+import { showToast } from "nextjs-toast-notify";
+
+jest.mock("nextjs-toast-notify", () => ({
+  showToast: {
+    success: jest.fn(),
+    info: jest.fn(),
+  },
+}));
 
 jest.mock("@/services/products", () => ({
   getCategories: jest.fn(),
@@ -40,7 +48,7 @@ const StoreProbe = () => {
     favorites,
     cart,
     isCartOpen,
-    setFavorite,
+    toggleFavorite,
     addToCart,
     decreaseFromCart,
     removeFromCart,
@@ -55,7 +63,7 @@ const StoreProbe = () => {
       <output data-testid="cart">
         {cart.map((item) => `${item.id}:${item.quantity}`).join(",")}
       </output>
-      <button type="button" onClick={() => setFavorite(1)}>Toggle favorite</button>
+      <button type="button" onClick={() => toggleFavorite(1)}>Toggle favorite</button>
       <button type="button" onClick={() => addToCart(products[0])}>Add product</button>
       <button type="button" onClick={() => decreaseFromCart(1)}>Decrease product</button>
       <button type="button" onClick={() => decreaseFromCart(999)}>Decrease missing product</button>
@@ -75,6 +83,8 @@ const renderStore = () => render(
 describe("favorite and cart persistence", () => {
   beforeEach(() => {
     window.localStorage.clear();
+    jest.mocked(showToast.success).mockClear();
+    jest.mocked(showToast.info).mockClear();
     getCategoriesMock.mockResolvedValue([]);
     getProductsMock.mockResolvedValue({
       first: 1,
@@ -130,6 +140,29 @@ describe("favorite and cart persistence", () => {
     expect(JSON.parse(window.localStorage.getItem("global-think-store") ?? "{}").cart).toEqual([]);
   });
 
+  it("notifies when adding to favorites and the cart", async () => {
+    renderStore();
+    await screen.findByRole("button", { name: "Toggle favorite" });
+
+    fireEvent.click(screen.getByRole("button", { name: "Toggle favorite" }));
+    expect(showToast.info).toHaveBeenCalledWith(
+      "Producto quitado de favoritos",
+      { duration: 2500, position: "top-right" }
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Toggle favorite" }));
+    expect(showToast.success).toHaveBeenCalledWith(
+      "Producto agregado a favoritos",
+      { duration: 2500, position: "top-right" }
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Add product" }));
+    expect(showToast.success).toHaveBeenCalledWith(
+      "Producto agregado al carrito",
+      { duration: 2500, position: "top-right" }
+    );
+  });
+
   it("persists whether the cart is open and restores it after remounting", async () => {
     const { unmount } = renderStore();
     await screen.findByRole("button", { name: "Toggle cart" });
@@ -163,9 +196,17 @@ describe("favorite and cart persistence", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Decrease product" }));
     await waitFor(() => expect(screen.getByTestId("cart")).toHaveTextContent("1:1"));
+    expect(showToast.info).toHaveBeenCalledWith(
+      "Se quitó una unidad de Producto persistido",
+      { duration: 2500, position: "top-right" }
+    );
 
     fireEvent.click(screen.getByRole("button", { name: "Decrease product" }));
     await waitFor(() => expect(screen.getByTestId("cart")).toHaveTextContent(""));
+    expect(showToast.success).toHaveBeenCalledWith(
+      "Producto persistido eliminado del carrito",
+      { duration: 2500, position: "top-right" }
+    );
 
     fireEvent.click(screen.getByRole("button", { name: "Decrease missing product" }));
     expect(screen.getByTestId("cart")).toHaveTextContent("");
@@ -193,6 +234,35 @@ describe("favorite and cart persistence", () => {
       expect(JSON.parse(window.localStorage.getItem("global-think-store") ?? "{}").cart)
         .toEqual([{ ...anotherProduct, quantity: 1 }]);
     });
+    expect(showToast.success).toHaveBeenCalledWith(
+      "Producto persistido eliminado del carrito",
+      { duration: 2500, position: "top-right" }
+    );
+  });
+
+  it("shows one notification when clearing the entire cart", async () => {
+    window.localStorage.setItem("global-think-store", JSON.stringify({
+      favorites: [],
+      cart: [
+        { ...product, quantity: 2 },
+        { ...anotherProduct, quantity: 1 },
+      ],
+    }));
+    renderStore();
+
+    await waitFor(() => expect(screen.getByTestId("cart")).toHaveTextContent("1:2,2:1"));
+    fireEvent.click(screen.getByRole("button", { name: "Clear cart" }));
+
+    await waitFor(() => expect(screen.getByTestId("cart")).toHaveTextContent(""));
+    expect(showToast.success).toHaveBeenCalledTimes(1);
+    expect(showToast.success).toHaveBeenCalledWith(
+      "Carrito vaciado",
+      { duration: 2500, position: "top-right" }
+    );
+    expect(showToast.info).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole("button", { name: "Clear cart" }));
+    expect(showToast.success).toHaveBeenCalledTimes(1);
   });
 
   it("keeps an intentionally empty saved favorites list instead of reseeding API favorites", async () => {
