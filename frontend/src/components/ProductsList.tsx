@@ -17,8 +17,9 @@ export const ProductsList = () => {
     clearFilters,
     currentPage,
     totalPages,
-    goToPage,
     error,
+    nextPage,
+    prevPage,
   } = useProductsContext();
   const router = useRouter();
   const hasPlayedInitialListAnimation = useRef(false);
@@ -132,7 +133,7 @@ export const ProductsList = () => {
               <motion.button
                 className="chip pagination__button"
                 type="button"
-                onClick={() => goToPage(currentPage - 1)}
+                onClick={() => prevPage()}
                 disabled={currentPage === 1}
                 whileTap={{ scale: 0.96 }}
               >
@@ -144,7 +145,7 @@ export const ProductsList = () => {
               <motion.button
                 className="chip pagination__button"
                 type="button"
-                onClick={() => goToPage(currentPage + 1)}
+                onClick={() => nextPage()}
                 disabled={currentPage === totalPages}
                 whileTap={{ scale: 0.96 }}
               >

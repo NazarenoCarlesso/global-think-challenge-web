@@ -57,7 +57,7 @@
   --toast-side-offset: 8px;
 }
 
-.toast-container.toast-container[class*="top-"] { --toast-offset: 96px; }
+.toast-container.toast-container[class*="top-"] { --toast-offset: 80px; }
 .toast-container.toast-container[class*="bottom-"] { --toast-offset: 20px; }
 .toast-container.toast-container[class*="-right"] { right: 8px; }
 .toast-nextjs.toast-nextjs {

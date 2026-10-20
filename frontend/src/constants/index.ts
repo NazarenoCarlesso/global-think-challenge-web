@@ -7,6 +7,13 @@ export const PRODUCTS_INITIAL_STATE: ProductsState = {
   cart: []
 };
 
+export const PRODUCTS_PER_PAGE = 8;
+
+export const DEFAULT_TOAST_OPTIONS = {
+  duration: 2000,
+  position: "top-right" as const,
+};
+
 export const DEFAULT_CONTEXT_VALUE: ProductContextType = {
   // Valores iniciales de ProductsState
   products: [],
@@ -25,7 +32,8 @@ export const DEFAULT_CONTEXT_VALUE: ProductContextType = {
   currentPage: 1,
   totalPages: 1,
   totalProducts: 0,
-  goToPage: () => { },
+  nextPage: () => { },
+  prevPage: () => { },
   error: null,
   filteredResults: [],
   resultsCount: 0,
