@@ -18,10 +18,10 @@ export const notifyProductUnitDecreased = (productTitle: string) => {
 };
 
 export const notifyProductRemovedFromCart = (productTitle: string) => {
-  showToast.success(`${productTitle} eliminado del carrito`, DEFAULT_TOAST_OPTIONS);
+  showToast.info(`${productTitle} eliminado del carrito`, DEFAULT_TOAST_OPTIONS);
 };
 
 export const notifyCartCleared = () => {
-  showToast.success("Carrito vaciado", DEFAULT_TOAST_OPTIONS);
+  showToast.info("Carrito vaciado", DEFAULT_TOAST_OPTIONS);
 };
 

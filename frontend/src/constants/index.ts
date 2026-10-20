@@ -10,7 +10,7 @@ export const PRODUCTS_INITIAL_STATE: ProductsState = {
 export const PRODUCTS_PER_PAGE = 8;
 
 export const DEFAULT_TOAST_OPTIONS = {
-  duration: 2500,
+  duration: 2000,
   position: "top-right" as const,
 };
 
